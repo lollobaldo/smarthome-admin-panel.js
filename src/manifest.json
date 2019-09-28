@@ -1,0 +1,17 @@
+{
+  "name": "My Home",
+  "short_name": "My Home",
+  "icons": [{
+      "src": "/res/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }, {
+      "src": "/res/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#EEEEEE",
+  "theme_color": "#0052d4"
+}
