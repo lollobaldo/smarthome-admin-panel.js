@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Link } from "react-router-dom";
+
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import constants from '../../constants/constants.scss';
@@ -32,7 +34,12 @@ const Presets = ({ presets, activePreset, onPresectSelect }) => (
 
 const Settings = () => (
   <div className="flex settings">
-    <Card name="Lights" icon="lightbulb" color={orange} value="ON"/>
+    <Link to="/lights">
+      <Card
+        name="Lights"
+        icon="lightbulb" color={orange}
+        value="ON"/>
+    </Link>
     <Card name="LEDs" icon="tree" color={red} value="Green"/>
     <Card name="Fans" icon="fan" color={blue} value="OFF"/>
     <Card name="Temp" icon="thermometer-half" color={yellow} value="86%"/>
@@ -42,7 +49,6 @@ const Settings = () => (
 )
 
 const Body = ({ presets, activePreset, onPresectSelect }) => {
-  console.log(onPresectSelect);
   return (
     <div className="body">
       <h3>Presets</h3>

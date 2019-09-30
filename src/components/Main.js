@@ -1,5 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
@@ -21,7 +23,8 @@ import { faUserCircle, faHeart as fasHeart } from '@fortawesome/free-regular-svg
 import { presets } from '../constants';
 import './Main.scss';
 import Header from './Header';
-import Body from './Body';
+import Home from './Home';
+import Lights from './Lights';
 
 library.add(
   faUserCircle,
@@ -58,7 +61,7 @@ export default class Main extends React.Component {
   render() {
     const { presets, activePreset, name } = this.state;
     return (
-      <div>
+      <Router>
         {/* <FontAwesomeIcon icon="home"
           size="9x"
           mask="square-full"
@@ -66,11 +69,22 @@ export default class Main extends React.Component {
             background: 'linear-gradient(180deg, #0052d4, #4364f7, #6fb1fc);'
           }} /> */}
         <Header name={name} />
-        <Body
+        {/* <Home
           presets={presets}
           activePreset={activePreset}
-          onPresectSelect={(i) => this.onPresectSelect(i)} />
-      </div>
+          onPresectSelect={(i) => this.onPresectSelect(i)} /> */}
+        <Switch>
+          <Route exact path="/">
+            <Home
+              presets={presets}
+              activePreset={activePreset}
+              onPresectSelect={(i) => this.onPresectSelect(i)} />
+          </Route>
+          <Route path="/lights/">
+            <Lights />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }

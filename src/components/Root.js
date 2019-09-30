@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
-import App from './App';
+import { hot } from "react-hot-loader";
+
+import Main from './Main';
 
 export default class Root extends Component {
   render() {
     return (
-      <App />
+      hot(module)(Main)
     );
   }
 }

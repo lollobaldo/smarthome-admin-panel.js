@@ -3,12 +3,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-// import configureStore, { history } from './store/configureStore';
-// import Root from './components/Root';
+
 import App from './components/App';
-// import './styles/styles.scss';
-import './favicon.ico'; // Tell webpack to load favicon.ico
-// const store = configureStore();
+
+import './favicon.ico';
+import './res/icons/logo.png';
+import './res/icons/logo-192x192.png';
+import './res/icons/logo-512x512.png';
 
 render(
   <AppContainer>

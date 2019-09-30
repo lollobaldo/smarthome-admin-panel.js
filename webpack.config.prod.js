@@ -15,7 +15,9 @@ export default {
     extensions: ['*', '.js', '.jsx', '.json'],
     // To support react-hot-loader
     alias: {
-      'react-dom': '@hot-loader/react-dom'
+      'react-dom': '@hot-loader/react-dom',
+      src: path.resolve(__dirname, './src'),
+      components: path.resolve(__dirname, './src/components'),
     }
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
