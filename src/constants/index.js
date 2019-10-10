@@ -1,4 +1,4 @@
-import constants from './constants.scss';
+import constants from './_constants.scss';
 
 const { red, yellow, purple } = constants;
 const { redG, purpleG, blackG } = constants;

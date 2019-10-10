@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import Cards from '../../Card';
 
-import constants from '../../../constants/constants.scss';
+import constants from '../../../constants/_constants.scss';
 
 import './Devices.scss';
 
