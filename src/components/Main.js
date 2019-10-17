@@ -50,7 +50,8 @@ const RoutesContainer = posed.div({
   // enter: {
   //   // opacity: 1,
   //   // delay: 300,
-  //   beforeChildren: true
+  //   // staggerChildren: 100,
+  //   // beforeChildren: true
   // },
   // exit: { opacity: 0 }
 });
@@ -79,12 +80,16 @@ class Main extends React.Component {
       <div style={{height:'100%', display:'flex', flexDirection:'column'}}>
         <Switch>
           <PoseGroup style={{height: '100%'}}>
-            <RoutesContainer key={location.pathname}>
+              <RoutesContainer key={location.pathname}>
+              <Route path="/lights">
+
               <Header name={name} location={location.pathname} />
-              <Route path="/lights/">
+
                 <Lights />
               </Route>
-              <Route exact path="/">
+              <Route exact>
+              <Header name={name} location={location.pathname} />
+
                 <Home
                   presets={presets}
                   activePreset={activePreset}

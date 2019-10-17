@@ -11,7 +11,7 @@ header {
   color: #000;
 
   & p {
-    display: inline;
+    // display: inline;
     margin: 0;
   }
 
@@ -26,6 +26,9 @@ header {
 }
 
 .user-icon {
+  // position: absolute;
+  // right: 16px;
+  // top: 16px;
   float: right;
   width: 1.5em;
   border-radius: 100%;

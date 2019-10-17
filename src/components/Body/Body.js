@@ -51,7 +51,7 @@ const Settings = () => (
 const Body = ({ presets, activePreset, onPresectSelect }) => {
   return (
     <div className="body">
-      <h3>Presets</h3>
+      <h3>Ciao</h3>
       <Presets
         presets={presets}
         activePreset={activePreset}

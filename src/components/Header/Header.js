@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Link } from "react-router-dom";
-import posed from "react-pose";
+import posed, { PoseGroup } from "react-pose";
 
 
 import './Header.scss';
@@ -8,48 +8,55 @@ import './Header.scss';
 import profilePic from '../../res/pp.jpg';
 import arrowLeft from '../../res/icons/icons8-left-50.png';
 
-const SpanRight = posed.p({
+const SpanLeft = posed.p({
   enter: {
     x: 0,
-    // delay: 150,
+    duration: 150,
+    delay: 150,
   },
   exit: {
-    x: -50,
+    duration: 150,
+    x: '-100%',
   }
 });
 
-const SpanDown = posed.p({
+const SpanUp = posed.p({
   enter: {
     y: 0,
-    // delay: 150,
+    opacity: 1,
+    delay: 300,
+    transition: {
+      y: { type: 'spring', stiffness: 1000, damping: 15 },
+      default: { duration: 300 }
+    }
   },
   exit: {
-    y: -50,
+    y: '-100%',
+    opacity: 0,
+    transition: { duration: 150 }
   }
 });
 
 
-const Header = () => {
+const Header = ({ location }) => {
   return (
     <header className="w3-container w3-xlarge w3-padding-16 w3-card">
       <div className="header-container">
         <Switch>
-          <Route exact path="/">
-            {/* <p> */}
-              <SpanDown>Hello Lorenzo!</SpanDown>
+          <Route path="/lights">
+            <SpanLeft>
+              <Link to="/">
+                <img src={arrowLeft} className="icon-back" />
+              </Link>
+              Lights
               <img src={profilePic} className="user-icon" />
-            {/* </p> */}
+            </SpanLeft>
           </Route>
-          <Route>
-            {/* <p> */}
-              <SpanRight>
-                <Link to="/">
-                  <img src={arrowLeft} className="icon-back" />
-                </Link>
-                <span>Lights</span>
-              </SpanRight>
+          <Route exact path="/">
+            <SpanUp>
+              Hello Lorenzo!
               <img src={profilePic} className="user-icon" />
-            {/* </p> */}
+            </SpanUp>
           </Route>
         </Switch>
       </div>
