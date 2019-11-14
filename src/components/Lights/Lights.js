@@ -17,13 +17,14 @@ const Lights = () => {
       'flex-direction': 'column',
       'height': '100%'}}>
       <img src={state ? bulbON : bulbOFF} onClick={() => setState(!state)} />
-      <div className="slider-container">
+      {/* <div className="slider-container">
         <input
           type="range"
-          min="1" max="100" defaultValue="100"
+          min="1" max="100"
           className="slider"
+          value={state ? 100 : 0}
           onChange={handleChange} />
-      </div>
+      </div> */}
       <h1>{state ? 'ON' : 'OFF'}</h1>
     </div>
   )
