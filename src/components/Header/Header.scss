@@ -1,6 +1,7 @@
 @import 'constants/constants.scss';
 
 header {
+  z-index: 10;
   height: 70px;
   // border-radius: 0% 0% 150% 150%/0% 0% 30% 30%;
   // background: linear-gradient(45deg, #FF4E50 30%, #f9d423 90%);

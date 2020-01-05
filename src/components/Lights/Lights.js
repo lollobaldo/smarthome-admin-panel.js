@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Lights.scss';
+import Bulb from './Bulb';
 
 
 import bulbON from '../../res/icons/icons8-light-on-96.png';
@@ -10,13 +11,19 @@ const Lights = () => {
   const [state, setState] = useState(true);
   const handleChange = event => setState(event.target.value>50);
   return(
-    <div style={{
-      'display': 'flex',
-      'justify-content': 'space-evenly',
-      'align-items': 'center',
-      'flex-direction': 'column',
-      'height': '100%'}}>
-      <img src={state ? bulbON : bulbOFF} onClick={() => setState(!state)} />
+    <div
+      className={state ? 'active' : ''}
+      style={{
+        'display': 'flex',
+        'justifyContent': 'space-evenly',
+        'alignItems': 'center',
+        'flexDirection': 'column',
+        'height': '100%'}}>
+
+      {/* <Bulb state={state} onClick={() => alert('change')} /> */}
+      <div className='bg-yellow'></div>
+      <Bulb state={state} onClick={() => setState(!state)} />
+      {/* <img src={state ? bulbON : bulbOFF} onClick={() => setState(!state)} /> */}
       {/* <div className="slider-container">
         <input
           type="range"

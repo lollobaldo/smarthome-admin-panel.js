@@ -79,24 +79,21 @@ class Main extends React.Component {
     return (
       <div style={{height:'100%', display:'flex', flexDirection:'column'}}>
         <Switch>
-          <PoseGroup style={{height: '100%'}}>
-              <RoutesContainer key={location.pathname}>
+          {/* <PoseGroup style={{height: '100%'}}>
+            <RoutesContainer key={location.pathname}> */}
               <Route path="/lights">
-
-              <Header name={name} location={location.pathname} />
-
+                <Header name={name} location={location.pathname} />
                 <Lights />
               </Route>
               <Route exact>
               <Header name={name} location={location.pathname} />
-
                 <Home
                   presets={presets}
                   activePreset={activePreset}
                   onPresectSelect={(i) => this.onPresectSelect(i)} />
               </Route>
-            </RoutesContainer>
-          </PoseGroup>
+            {/* </RoutesContainer>
+          </PoseGroup> */}
         </Switch>
       </div>
     );
