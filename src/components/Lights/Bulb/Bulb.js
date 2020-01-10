@@ -7,7 +7,7 @@ import './Bulb.scss';
 // import bulbOFF from '../../res/icons/icons8-light-off-96.png';
 
 
-const Bulb = ({ state, onClick }) => (
+const Bulb = ({ onClick }) => (
   <div onClick={onClick} className="container">
     <div className="fancy-bulb">
       <div className="left-streaks streaks"></div>
