@@ -28,8 +28,10 @@ import Header from './Header';
 // import Footer from './Footer';
 import Home from './Home';
 import Lights from './Lights';
+import Leds from './Leds';
 
-import '../utils/mqtt';
+import { getKeys, assignWithPath, parseMqttMessage } from '../utils';
+import { startMqtt, safePublish } from '../utils/mqtt';
 
 library.add(
   faUserCircle,
@@ -59,7 +61,6 @@ library.add(
 // });
 
 class Main extends React.Component {
-
   constructor(props) {
     super(props);
     const defState = {
@@ -67,12 +68,42 @@ class Main extends React.Component {
       activePreset: -1,
       name: 'Lorenzo',
       mqtt: false,
+      mqttState: {
+        lights: {
+          floorlamp: false,
+        },
+        plants: {
+          p1: 86,
+        },
+      },
     };
+    console.log(getKeys(defState.mqttState));
     this.state = defState;
+
+    const callbacks = {
+      onConnect: this.onMqttConnect.bind(this),
+      onMessage: this.onMqttMessage.bind(this),
+    }
+    startMqtt(callbacks);
   }
 
-  onMqttConnect(connected) {
-    this.setState({mqtt: connected});
+  onMqttConnect() {
+    this.setState({mqtt: true});
+    // console.log('mqtt onConnect called');
+    return getKeys(this.state.mqttState);
+  }
+
+  onMqttMessage(topic, message) {
+    // console.log(`Message on topic ${topic}: ${message.toString()}`);
+    // console.log((message))
+    this.setState({
+      mqttState: assignWithPath(
+        this.state.mqttState,
+        topic,
+        parseMqttMessage(message)
+      ),
+    });
+    // console.log(this.state);
   }
 
   onPresectSelect(i) {
@@ -80,9 +111,22 @@ class Main extends React.Component {
     this.setState({activePreset: i === activePreset ? -1 : i});
   }
 
+  onLightSwitch() {
+    // alert('called');
+    const { lights } = this.state.mqttState;
+    const newState = !lights.floorlamp;
+    this.setState(
+      assignWithPath(
+        this.state.mqttState,
+        'light/floorlamp',
+        newState));
+    safePublish('lights/floorlamp', newState);
+  }
+
   render() {
     const { presets, activePreset, name } = this.state;
     const { location } = this.props;
+    const { lights } = this.state.mqttState;
     return (
       <div style={{height:'100%', display:'flex', flexDirection:'column'}}>
         <Switch>
@@ -90,7 +134,15 @@ class Main extends React.Component {
             <RoutesContainer key={location.pathname}> */}
               <Route path="/lights">
                 <Header name={name} location={location.pathname} />
-                <Lights />
+                <Lights
+                  handler={this.onLightSwitch.bind(this)}
+                  state={lights.floorlamp} />
+              </Route>
+              <Route path="/leds">
+                <Header name={name} location={location.pathname} />
+                <Leds
+                  handler={this.onLightSwitch.bind(this)}
+                  state={lights.floorlamp} />
               </Route>
               <Route exact>
               <Header name={name} location={location.pathname} />

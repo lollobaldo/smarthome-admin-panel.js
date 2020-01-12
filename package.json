@@ -40,6 +40,7 @@
     "@material-ui/icons": "4.5.1",
     "async-mqtt": "2.4.2",
     "connected-react-router": "^6.5.2",
+    "dottie": "2.0.2",
     "mqtt": "3.0.0",
     "object-assign": "^4.1.1",
     "react": "16.11.0",

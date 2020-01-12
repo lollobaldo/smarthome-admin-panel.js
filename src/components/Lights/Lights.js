@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import './Lights.scss';
 import Bulb from './Bulb';
 
+const Lights = ({ handler, state }) => {
+  // const [state, setState] = useState(true);
 
-// import bulbON from '../../res/icons/icons8-light-on-96.png';
-// import bulbOFF from '../../res/icons/icons8-light-off-96.png';
-
-import { safePublish } from '../../utils/mqtt';
-
-const Lights = () => {
-  const [state, setState] = useState(true);
-
-  const switchLight = () => {
-    console.log('light switched');
-    // console.log(publish);
-    // console.log(safePublish);
-    setState(!state);
-    safePublish(
-      'lights/floorlamp',
-      state ? 'ON' : 'OFF'
-    );
-  };
+  // const switchLight = () => {
+  //   console.log('light switched');
+  //   // console.log(publish);
+  //   // console.log(safePublish);
+  //   setState(!state);
+  //   safePublish(
+  //     'lights/floorlamp',
+  //     state ? 'ON' : 'OFF'
+  //   );
+  // };
 
   return(
     <div
@@ -34,7 +30,7 @@ const Lights = () => {
 
       {/* <Bulb state={state} onClick={() => alert('change')} /> */}
       <div className='bg-yellow'></div>
-      <Bulb state={state} onClick={switchLight} />
+      <Bulb state={state} onClick={handler} />
       {/* <img src={state ? bulbON : bulbOFF} onClick={() => setState(!state)} /> */}
       {/* <div className="slider-container">
         <input
@@ -48,5 +44,10 @@ const Lights = () => {
     </div>
   )
 };
+
+Lights.propTypes = {
+  handler: PropTypes.func,
+  state: PropTypes.bool,
+}
 
 export default Lights;
