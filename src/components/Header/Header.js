@@ -52,6 +52,15 @@ const Header = () => {
               <img src={profilePic} className="user-icon" />
             </p>
           </Route>
+          <Route path="/leds">
+            <p>
+              <Link to="/">
+                <img src={arrowLeft} className="icon-back" />
+              </Link>
+              Leds
+              <img src={profilePic} className="user-icon" />
+            </p>
+          </Route>
           <Route exact path="/">
             <p>
               Hello Lorenzo!

@@ -17,6 +17,32 @@ export const getKeys = (obj, prefix = '') =>
     }
 }, []);
 
+export const rgbToHex = (rgb) => {
+  const unpackRgb = (rgb) => {
+    rgb = rgb
+        .replace(/[^\d,]/g, '')
+        .split(',')
+        .map(n => Number(n));
+    const [r,g,b] = rgb;
+    return {r,g,b};
+  };
+
+  const decToHex = (dec) => {
+    var hex = Number(dec).toString(16);
+    if (hex.length < 2) {
+         hex = "0" + hex;
+    }
+    return hex;
+  };
+
+  const {r, g, b} = unpackRgb(rgb);
+  const red = decToHex(r);
+  const green = decToHex(g);
+  const blue = decToHex(b);
+  return "#" + red + green + blue;
+};
+
+
 // return object with nested children
 export const assignWithPath = (obj, path, value) => {
   dottie.set(obj, path.replace(/\//g, '.'), value);

@@ -38,7 +38,10 @@ class Devices extends React.Component {
           icon="lightbulb" color={orange}
           value="ON"
           onClick={() => this.props.history.push('/lights')} />
-        <Card name="LEDs" icon="tree" color={red} value="Green"/>
+        <Card name="Leds"
+          icon="lightbulb" color={orange}
+          value=""
+          onClick={() => this.props.history.push('/leds')} />
         <Card name="Fans" icon="fan" color={blue} value="OFF"/>
         <Card name="Temp" icon="thermometer-half" color={yellow} value="86%"/>
         <Card name="Humidity" icon="tint" color={blue} value="86%"/>

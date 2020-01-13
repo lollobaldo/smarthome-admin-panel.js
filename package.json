@@ -44,6 +44,7 @@
     "mqtt": "3.0.0",
     "object-assign": "^4.1.1",
     "react": "16.11.0",
+    "react-colour-wheel": "1.0.7",
     "react-dom": "16.11.0",
     "react-pose": "^4.0.9",
     "react-router-dom": "5.1.2"
@@ -108,7 +109,8 @@
     "webpack": "4.41.2",
     "webpack-bundle-analyzer": "3.6.0",
     "webpack-dev-middleware": "3.7.2",
-    "webpack-hot-middleware": "2.25.0"
+    "webpack-hot-middleware": "2.25.0",
+    "webpack-node-externals": "1.7.2"
   },
   "keywords": [],
   "repository": {

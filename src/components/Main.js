@@ -30,7 +30,7 @@ import Home from './Home';
 import Lights from './Lights';
 import Leds from './Leds';
 
-import { getKeys, assignWithPath, parseMqttMessage } from '../utils';
+import { getKeys, assignWithPath, parseMqttMessage, rgbToHex } from '../utils';
 import { startMqtt, safePublish } from '../utils/mqtt';
 
 library.add(
@@ -71,6 +71,7 @@ class Main extends React.Component {
       mqttState: {
         lights: {
           floorlamp: false,
+          leds: '#ffbb00',
         },
         plants: {
           p1: 86,
@@ -81,19 +82,19 @@ class Main extends React.Component {
     this.state = defState;
 
     const callbacks = {
-      onConnect: this.onMqttConnect.bind(this),
-      onMessage: this.onMqttMessage.bind(this),
+      onConnect: this.onMqttConnect,
+      onMessage: this.onMqttMessage,
     }
     startMqtt(callbacks);
   }
 
-  onMqttConnect() {
+  onMqttConnect = () => {
     this.setState({mqtt: true});
     // console.log('mqtt onConnect called');
     return getKeys(this.state.mqttState);
   }
 
-  onMqttMessage(topic, message) {
+  onMqttMessage = (topic, message) => {
     // console.log(`Message on topic ${topic}: ${message.toString()}`);
     // console.log((message))
     this.setState({
@@ -106,12 +107,12 @@ class Main extends React.Component {
     // console.log(this.state);
   }
 
-  onPresectSelect(i) {
+  onPresectSelect = (i) => {
     const { activePreset } = this.state;
     this.setState({activePreset: i === activePreset ? -1 : i});
   }
 
-  onLightSwitch() {
+  onLightSwitch = () => {
     // alert('called');
     const { lights } = this.state.mqttState;
     const newState = !lights.floorlamp;
@@ -121,6 +122,17 @@ class Main extends React.Component {
         'light/floorlamp',
         newState));
     safePublish('lights/floorlamp', newState);
+  }
+
+  onLedsChange = (colour) => {
+    colour = rgbToHex(colour);
+    console.log(colour);
+    this.setState(
+      assignWithPath(
+        this.state.mqttState,
+        'light/leds',
+        colour));
+    safePublish('lights/leds', colour);
   }
 
   render() {
@@ -135,14 +147,14 @@ class Main extends React.Component {
               <Route path="/lights">
                 <Header name={name} location={location.pathname} />
                 <Lights
-                  handler={this.onLightSwitch.bind(this)}
+                  handler={this.onLightSwitch}
                   state={lights.floorlamp} />
               </Route>
               <Route path="/leds">
                 <Header name={name} location={location.pathname} />
                 <Leds
-                  handler={this.onLightSwitch.bind(this)}
-                  state={lights.floorlamp} />
+                  handler={this.onLedsChange}
+                  state={lights.leds} />
               </Route>
               <Route exact>
               <Header name={name} location={location.pathname} />

@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
+import nodeExternals from 'webpack-node-externals';
 
 export default {
   resolve: {
@@ -23,6 +24,7 @@ export default {
   ],
   target: 'web',
   mode: 'development',
+  // externals: [nodeExternals({ whitelist: ['react-colour-wheel'] })],
   output: {
     path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
@@ -45,7 +47,9 @@ export default {
     rules: [
       {
         test: /\.jsx?$/,
+        // exclude: /node_modules(?!(\/react-colour-wheel))/,
         exclude: /node_modules/,
+        // include: /node_modules\/react-colour-wheel/,
         use: ['babel-loader']
       },
       {

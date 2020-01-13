@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+// import nodeExternals from 'webpack-node-externals';
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
