@@ -9,7 +9,7 @@ import constants from '../../../constants/_constants.scss';
 import './Devices.scss';
 
 const { Card } = Cards;
-const { red, yellow, orange, green, blue } = constants;
+const { yellow, orange, green, blue } = constants;
 
 // const Devices = ({ history }) => (
 //   <div className="flex settings">

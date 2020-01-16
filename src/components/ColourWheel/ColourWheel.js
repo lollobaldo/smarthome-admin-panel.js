@@ -133,32 +133,16 @@ class ColourWheel extends React.Component {
     console.log(this.canvasEl);
     console.log(this.ctx);
 
-    // this.drawOuterWheel()
-    // if (this.props.colour) {
-    //   const rgb = colourToRgbObj(this.props.colour)
-    //   this.setState({ rgb }, () => {
-    //     this.drawInnerWheel()
-    //     this.drawCenterCircle()
-    //   })
-    // }
-    // this.drawSpacers()
+    this.drawOuterWheel()
+    if (this.props.colour) {
+      // const rgb = colourToRgbObj(this.props.colour)
+      // this.setState({ rgb }, () => {
+        this.drawInnerWheel()
+        this.drawCenterCircle()
+      // })
+    }
+    this.drawSpacers()
   }
-
-  // // MARK - mouse-events:
-  // onCanvasHover = ({ clientX, clientY }) => {
-  //   const evt = this.getRelativeMousePos(clientX, clientY)
-
-  //   // Cases for mouse-location:
-  //   if (this.outerWheelBounds.inside(evt.fromCenter)) {
-  //     this.canvasEl.style.cursor = 'crosshair'
-  //   } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.state.innerWheelOpen) {
-  //     this.canvasEl.style.cursor = 'crosshair'
-  //   } else if (this.centerCircleBounds.inside(evt.fromCenter) && this.state.centerCircleOpen) { // TODO: Have it clear on click?
-  //     this.canvasEl.style.cursor = 'pointer'
-  //   } else {
-  //     this.canvasEl.style.cursor = 'auto'
-  //   }
-  // }
 
   onCanvasClick = ({ clientX, clientY }) => {
     console.log('onCanvasClick');
@@ -184,14 +168,8 @@ class ColourWheel extends React.Component {
 
     this.props.onColourSelected(rgbArg)
 
-    // this.setState({
-    //   rgb,
-    //   innerWheelOpen: true,
-    //   centerCircleOpen: true
-    // }, () => {
-    //   this.drawInnerWheel()
-    //   this.drawCenterCircle()
-    // })
+    // this.drawInnerWheel()
+    // this.drawCenterCircle()
   }
 
   innerWheelClicked = (evtPos) => {
@@ -205,26 +183,7 @@ class ColourWheel extends React.Component {
     const rgbArg = convertObjToString(rgb)
 
     this.props.onColourSelected(rgbArg)
-
-    // this.setState({
-    //   rgb,
-    //   centerCircleOpen: true
-    // }, () => {
-    //   this.drawCenterCircle()
-    // })
   }
-
-  // clear (callback = false) {
-  //   this.setState({
-  //     rgb: null,
-  //     innerWheelOpen: false,
-  //     centerCircleOpen: false
-  //   }, () => {
-  //     // Reset state & re-draw.
-  //     this.initCanvas()
-  //     if (callback) callback()
-  //   })
-  // }
 
   // MARK - Drawing:
   drawOuterWheel = () => {
@@ -316,7 +275,7 @@ class ColourWheel extends React.Component {
     console.log(rgbShades);
 
     // Different functions for drawing our inner-wheel of shades.
-    function drawShades () {
+    const drawShades = () => {
       rgbShades.forEach((rgb, i) => {
         this.ctx.beginPath()
 
@@ -333,7 +292,7 @@ class ColourWheel extends React.Component {
       })
     }
 
-    function animateShades () {
+    const animateShades = () => {
       rgbShades.forEach((rgb, i) => {
         this.ctx.beginPath()
 
@@ -386,30 +345,14 @@ class ColourWheel extends React.Component {
     this.ctx.closePath()
   }
 
-  // componentDidMount = () => {
-  //   console.log('compDidMount');
-  //   this.drawOuterWheel()
-  //   if (this.props.colour) {
-  //     const rgb = colourToRgbObj(this.props.colour)
-  //     this.setState({ rgb }, () => {
-  //       this.drawInnerWheel()
-  //       this.drawCenterCircle()
-  //     })
-  //   }
-  //   this.drawSpacers()
-  // }
-
   componentDidUpdate = () => {
     console.log('compDidUpdate');
 
     this.drawOuterWheel()
     console.log(this.props.colour);
     if (this.props.colour) {
-      // const rgb = colourToRgbObj(this.props.colour)
-      // this.setState({ rgb }, () => {
-        this.drawInnerWheel()
-        this.drawCenterCircle()
-      // })
+      this.drawInnerWheel()
+      this.drawCenterCircle()
     }
     this.drawSpacers()
   }
@@ -417,25 +360,15 @@ class ColourWheel extends React.Component {
   render = () => {
     console.log('render');
 
-    const { radius, dynamicCursor } = this.props
+    const { radius } = this.props
     return (
-      dynamicCursor ? (
-        <canvas
-          id='colour-picker'
-          onClick={this.onCanvasClick}
-          onMouseMove={this.onCanvasHover}
-          width={`${radius * 2}px`}
-          height={`${radius * 2}px`}
-        />
-      ) : (
-        <canvas
+      <canvas
           id='colour-picker'
           onClick={this.onCanvasClick}
           width={`${radius * 2}px`}
           height={`${radius * 2}px`}
         />
       )
-    )
   }
 }
 
