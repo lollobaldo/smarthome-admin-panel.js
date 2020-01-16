@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ColourWheel from '../react-colour-wheel/ColourWheel';
+import ColourWheel from '../ColourWheel/ColourWheel';
 
 import './Leds.scss';
 
@@ -27,9 +27,9 @@ const Leds = ({ handler, state }) => (
         shadowColour: 'grey',
         shadowBlur: 5
       }}
-      onRef={() => {}}
+      // onRef={() => {}}
       preset
-      presetColour={state}
+      colour={state}
       animated />
   </div>
 );

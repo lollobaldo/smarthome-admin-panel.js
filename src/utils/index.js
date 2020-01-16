@@ -20,9 +20,9 @@ export const getKeys = (obj, prefix = '') =>
 export const rgbToHex = (rgb) => {
   const unpackRgb = (rgb) => {
     rgb = rgb
-        .replace(/[^\d,]/g, '')
-        .split(',')
-        .map(n => Number(n));
+      .replace(/[^\d,]/g, '')
+      .split(',')
+      .map(n => Number(n));
     const [r,g,b] = rgb;
     return {r,g,b};
   };

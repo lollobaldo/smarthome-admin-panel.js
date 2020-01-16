@@ -85,6 +85,7 @@ class Main extends React.Component {
       onConnect: this.onMqttConnect,
       onMessage: this.onMqttMessage,
     }
+    console.log('In constructor, calling startMqtT()');
     startMqtt(callbacks);
   }
 
@@ -126,7 +127,6 @@ class Main extends React.Component {
 
   onLedsChange = (colour) => {
     colour = rgbToHex(colour);
-    console.log(colour);
     this.setState(
       assignWithPath(
         this.state.mqttState,

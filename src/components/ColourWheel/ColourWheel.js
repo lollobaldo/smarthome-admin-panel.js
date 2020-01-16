@@ -1,8 +1,5 @@
-// NOTES:
-// -- Array-destructuring assignment won't work w vanilla ie11; needs babel-polyfill lol
-
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // Utils:
 import {
@@ -11,8 +8,7 @@ import {
   calculateBounds,
   produceRgbShades,
   convertObjToString
-} from './utils/utils'
-import hexStrings from './utils/hexStrings'
+} from './utils/utils';
 
 // Prop-types:
 const propTypes = {
@@ -24,58 +20,74 @@ const propTypes = {
   colours: PropTypes.array,
   shades: PropTypes.number,
   dynamicCursor: PropTypes.bool,
-  preset: PropTypes.bool,
-  presetColour: PropTypes.string,
+  state: PropTypes.string,
+  colour: PropTypes.string,
   animated: PropTypes.bool,
   toRgbObj: PropTypes.bool
-}
+};
+
+const defaultColours = [
+  '#00C3A9',
+  '#00B720',
+  '#008813',
+  '#000000',
+  '#FFFFFF',
+  '#F8E300',
+  '#FF6400',
+  '#E20000',
+  '#AC000D',
+  '#9E005F',
+  '#6D0E82',
+  '#3B3887',
+  '#175FDA',
+  '#0091E2',
+  '#00BCED',
+  '#14E4C5'
+];
 
 const defaultProps = {
-  colours: hexStrings,
+  colours: defaultColours,
   shades: 16,
   padding: 0,
   dynamicCursor: true,
-  preset: false,
   animated: true,
   toRgbObj: false
-}
+};
 
 // Global-vars:
-const fullCircle = 2 * Math.PI
-const quarterCircle = fullCircle / 4
+const fullCircle = 2 * Math.PI;
+const quarterCircle = Math.PI / 2;
 
-class ColourWheel extends Component {
-  constructor () {
-    super()
+class ColourWheel extends React.Component {
+  constructor(props) {
+    super();
 
-    this.state = {
-      rgb: null,
-      innerWheelOpen: false,
-      centerCircleOpen: false
-    }
-
-    // Initialised just before the DOM has loaded; after constructor().
-    this.outerWheelBounds = null
-    this.innerWheelBounds = null
-    this.centerCircleBounds = null
-
-    this.outerWheelRadius = null
-    this.innerWheelRadius = null
-    this.centerCircleRadius = null
-    this.firstSpacerRadius = null
-    this.secondSpacerRadius = null
-
+    console.log('Constructor');
     // Initialised once the DOM has loaded.
     this.canvasEl = null
     this.ctx = null
 
-    // Bindings:
-    this.onCanvasHover = this.onCanvasHover.bind(this)
-    this.onCanvasClick = this.onCanvasClick.bind(this)
+    const { radius, lineWidth, padding } = props;
+
+    // Setting effective radii:
+    this.outerWheelRadius = radius
+    this.innerWheelRadius = this.outerWheelRadius - lineWidth - padding
+    this.centerCircleRadius = this.innerWheelRadius - lineWidth - padding
+    this.firstSpacerRadius = this.outerWheelRadius - lineWidth // NOTE: effectiveRadius will take into account padding as lineWidth.
+    this.secondSpacerRadius = this.innerWheelRadius - lineWidth
+
+    // Defining our bounds-objects, exposes a .inside(e) -> boolean method:
+    this.outerWheelBounds = calculateBounds(radius - lineWidth, radius)
+    this.innerWheelBounds = calculateBounds(this.innerWheelRadius - lineWidth, this.innerWheelRadius)
+    this.centerCircleBounds = calculateBounds(0, this.centerCircleRadius)
+    this.firstSpacerBounds = calculateBounds(this.firstSpacerRadius - padding, this.firstSpacerRadius)
+    this.secondSpacerBounds = calculateBounds(this.secondSpacerRadius - padding, this.secondSpacerRadius)
+
   }
 
   // MARK - Common:
-  getRelativeMousePos (clientX, clientY) {
+  getRelativeMousePos = (clientX, clientY) => {
+    console.log('getRelMousePos');
     const { radius } = this.props
 
     const canvasPos = this.canvasEl.getBoundingClientRect()
@@ -98,7 +110,9 @@ class ColourWheel extends Component {
     }
   }
 
-  initCanvas () {
+  initCanvas = () => {
+    console.log('initCanvas');
+
     const { radius } = this.props
 
     const width = radius * 2
@@ -110,85 +124,59 @@ class ColourWheel extends Component {
     this.drawSpacers()
   }
 
-  // MARK - Life-cycle methods:
-  componentWillMount () {
-    const { radius, lineWidth, padding } = this.props
-
-    // Setting effective radii:
-    this.outerWheelRadius = radius
-    this.innerWheelRadius = this.outerWheelRadius - lineWidth - padding
-    this.centerCircleRadius = this.innerWheelRadius - lineWidth - padding
-    this.firstSpacerRadius = this.outerWheelRadius - lineWidth // NOTE: effectiveRadius will take into account padding as lineWidth.
-    this.secondSpacerRadius = this.innerWheelRadius - lineWidth
-
-    // Defining our bounds-objects, exposes a .inside(e) -> boolean method:
-    this.outerWheelBounds = calculateBounds(radius - lineWidth, radius)
-    this.innerWheelBounds = calculateBounds(this.innerWheelRadius - lineWidth, this.innerWheelRadius)
-    this.centerCircleBounds = calculateBounds(0, this.centerCircleRadius)
-    this.firstSpacerBounds = calculateBounds(this.firstSpacerRadius - padding, this.firstSpacerRadius)
-    this.secondSpacerBounds = calculateBounds(this.secondSpacerRadius - padding, this.secondSpacerRadius)
-  }
-
-  componentDidMount () {
-    // Giving this context to our parent component.
-    if (this.props.onRef) this.props.onRef(this)
-
+  componentDidMount = () => {
+    console.log('compDidMount');
     // Initialising our canvas & context objs.
     this.canvasEl = document.getElementById('colour-picker')
     this.ctx = this.canvasEl.getContext('2d')
 
-    if (this.props.preset) {
-      const rgb = colourToRgbObj(this.props.presetColour)
+    console.log(this.canvasEl);
+    console.log(this.ctx);
 
-      this.setState({ rgb }, () => {
-        this.drawOuterWheel()
-        this.drawInnerWheel()
-        this.drawCenterCircle()
-        this.drawSpacers()
-      })
-    } else {
-      this.drawOuterWheel()
-      this.drawSpacers()
-    }
+    // this.drawOuterWheel()
+    // if (this.props.colour) {
+    //   const rgb = colourToRgbObj(this.props.colour)
+    //   this.setState({ rgb }, () => {
+    //     this.drawInnerWheel()
+    //     this.drawCenterCircle()
+    //   })
+    // }
+    // this.drawSpacers()
   }
 
-  componentWillUnmount () {
-    this.props.onRef(undefined)
-  }
+  // // MARK - mouse-events:
+  // onCanvasHover = ({ clientX, clientY }) => {
+  //   const evt = this.getRelativeMousePos(clientX, clientY)
 
-  // MARK - mouse-events:
-  onCanvasHover ({ clientX, clientY }) {
+  //   // Cases for mouse-location:
+  //   if (this.outerWheelBounds.inside(evt.fromCenter)) {
+  //     this.canvasEl.style.cursor = 'crosshair'
+  //   } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.state.innerWheelOpen) {
+  //     this.canvasEl.style.cursor = 'crosshair'
+  //   } else if (this.centerCircleBounds.inside(evt.fromCenter) && this.state.centerCircleOpen) { // TODO: Have it clear on click?
+  //     this.canvasEl.style.cursor = 'pointer'
+  //   } else {
+  //     this.canvasEl.style.cursor = 'auto'
+  //   }
+  // }
+
+  onCanvasClick = ({ clientX, clientY }) => {
+    console.log('onCanvasClick');
     const evt = this.getRelativeMousePos(clientX, clientY)
-
-    // Cases for mouse-location:
-    if (this.outerWheelBounds.inside(evt.fromCenter)) {
-      this.canvasEl.style.cursor = 'crosshair'
-    } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.state.innerWheelOpen) {
-      this.canvasEl.style.cursor = 'crosshair'
-    } else if (this.centerCircleBounds.inside(evt.fromCenter) && this.state.centerCircleOpen) { // TODO: Have it clear on click?
-      this.canvasEl.style.cursor = 'pointer'
-    } else {
-      this.canvasEl.style.cursor = 'auto'
-    }
-  }
-
-  onCanvasClick ({ clientX, clientY }) {
-    const evt = this.getRelativeMousePos(clientX, clientY)
-
     // Cases for click-events:
     if (this.outerWheelBounds.inside(evt.fromCenter)) {
       this.outerWheelClicked(evt.onCanvas)
-    } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.state.innerWheelOpen) {
+    } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.props.colour) {
       this.innerWheelClicked(evt.onCanvas)
     }
   }
 
   // MARK - Clicks & action methods:
-  outerWheelClicked (evtPos) {
+  outerWheelClicked = (evtPos) => {
+    console.log('outWheelClick');
     // returns an rgba array of the pixel-clicked.
     const rgbaArr = this.ctx.getImageData(evtPos.x, evtPos.y, 1, 1).data
     const [r, g, b] = rgbaArr
-
     const rgb = { r, g, b }
 
     // Whether the user wants rgb-strings or rgb objects returned.
@@ -196,17 +184,19 @@ class ColourWheel extends Component {
 
     this.props.onColourSelected(rgbArg)
 
-    this.setState({
-      rgb,
-      innerWheelOpen: true,
-      centerCircleOpen: true
-    }, () => {
-      this.drawInnerWheel()
-      this.drawCenterCircle()
-    })
+    // this.setState({
+    //   rgb,
+    //   innerWheelOpen: true,
+    //   centerCircleOpen: true
+    // }, () => {
+    //   this.drawInnerWheel()
+    //   this.drawCenterCircle()
+    // })
   }
 
-  innerWheelClicked (evtPos) {
+  innerWheelClicked = (evtPos) => {
+    console.log('innWheelClick');
+
     const rgbaArr = this.ctx.getImageData(evtPos.x, evtPos.y, 1, 1).data
     const [r, g, b] = rgbaArr
 
@@ -216,28 +206,29 @@ class ColourWheel extends Component {
 
     this.props.onColourSelected(rgbArg)
 
-    this.setState({
-      rgb,
-      centerCircleOpen: true
-    }, () => {
-      this.drawCenterCircle()
-    })
+    // this.setState({
+    //   rgb,
+    //   centerCircleOpen: true
+    // }, () => {
+    //   this.drawCenterCircle()
+    // })
   }
 
-  clear (callback = false) {
-    this.setState({
-      rgb: null,
-      innerWheelOpen: false,
-      centerCircleOpen: false
-    }, () => {
-      // Reset state & re-draw.
-      this.initCanvas()
-      if (callback) callback()
-    })
-  }
+  // clear (callback = false) {
+  //   this.setState({
+  //     rgb: null,
+  //     innerWheelOpen: false,
+  //     centerCircleOpen: false
+  //   }, () => {
+  //     // Reset state & re-draw.
+  //     this.initCanvas()
+  //     if (callback) callback()
+  //   })
+  // }
 
   // MARK - Drawing:
-  drawOuterWheel () {
+  drawOuterWheel = () => {
+    console.log('drawOutWheel');
     // TODO: Draw outline; separate method.
     const { radius, colours, lineWidth } = this.props
     const height = radius * 2
@@ -266,14 +257,16 @@ class ColourWheel extends Component {
     })
   }
 
-  drawSpacers () {
+  drawSpacers = () => {
+    console.log('drawSpacers');
+
     if (this.props.spacers) {
       this.drawSpacer(this.firstSpacerRadius)
       this.drawSpacer(this.secondSpacerRadius)
     }
   }
 
-  drawSpacer (spacerRadius) {
+  drawSpacer = (spacerRadius) => {
     const { radius, padding, spacers: { colour, shadowColour, shadowBlur } } = this.props
 
     const height = radius * 2
@@ -296,12 +289,16 @@ class ColourWheel extends Component {
     this.ctx.shadowColor = 'transparent'
   }
 
-  drawInnerWheel (animationPercentage = 0) {
+  drawInnerWheel = (animationPercentage = 0) => {
+    console.log('drawInnerWheel');
+
     // raf setup.
     let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
     window.requestAnimationFrame = requestAnimationFrame
 
-    const { rgb: { r, g, b } } = this.state
+    console.log(this.props.colour);
+    const { r, g, b } = colourToRgbObj(this.props.colour);
+    console.log({r,g,b});
     const { radius, lineWidth, shades, animated } = this.props
 
     const height = radius * 2
@@ -316,6 +313,7 @@ class ColourWheel extends Component {
     this.drawSpacers()
 
     const rgbShades = produceRgbShades(r, g, b, shades)
+    console.log(rgbShades);
 
     // Different functions for drawing our inner-wheel of shades.
     function drawShades () {
@@ -358,8 +356,8 @@ class ColourWheel extends Component {
       if (animationPercentage < 1) requestAnimationFrame(animateShades)
     }
 
-    animateShades = animateShades.bind(this)
-    drawShades = drawShades.bind(this)
+    // animateShades = animateShades.bind(this)
+    // drawShades = drawShades.bind(this)
 
     if (animated) {
       animateShades()
@@ -369,7 +367,9 @@ class ColourWheel extends Component {
   }
 
   drawCenterCircle () {
-    const { rgb } = this.state
+    console.log('drawCenterCircle');
+
+    const rgb = colourToRgbObj(this.props.colour);
     const { radius } = this.props
 
     const height = radius * 2
@@ -386,9 +386,38 @@ class ColourWheel extends Component {
     this.ctx.closePath()
   }
 
-  render () {
-    const { radius, dynamicCursor } = this.props
+  // componentDidMount = () => {
+  //   console.log('compDidMount');
+  //   this.drawOuterWheel()
+  //   if (this.props.colour) {
+  //     const rgb = colourToRgbObj(this.props.colour)
+  //     this.setState({ rgb }, () => {
+  //       this.drawInnerWheel()
+  //       this.drawCenterCircle()
+  //     })
+  //   }
+  //   this.drawSpacers()
+  // }
 
+  componentDidUpdate = () => {
+    console.log('compDidUpdate');
+
+    this.drawOuterWheel()
+    console.log(this.props.colour);
+    if (this.props.colour) {
+      // const rgb = colourToRgbObj(this.props.colour)
+      // this.setState({ rgb }, () => {
+        this.drawInnerWheel()
+        this.drawCenterCircle()
+      // })
+    }
+    this.drawSpacers()
+  }
+
+  render = () => {
+    console.log('render');
+
+    const { radius, dynamicCursor } = this.props
     return (
       dynamicCursor ? (
         <canvas
