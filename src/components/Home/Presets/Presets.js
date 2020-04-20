@@ -9,7 +9,9 @@ const { CardIcon } = Cards;
 
 const Presets = ({ presets, activePreset, onPresectSelect }) => (
   <div className="flex presets">
-    {presets.map(({ name, color, bg, icon }, i) => (
+    {presets.map(({
+      name, color, bg, icon,
+    }, i) => (
       <CardIcon key={name}
         icon={icon} color={color} bg={bg}
         isActive={activePreset === i}

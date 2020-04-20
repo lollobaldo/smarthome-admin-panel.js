@@ -1,6 +1,7 @@
 export default {
   mqttCredentials: {
-    clientId: 'SAP--' + Math.random().toString(16).substr(2, 8),
+    // Moved clientID to 'utils/mqtt.js' to prevent ID conflicts on hot-reload
+    // clientId: `SAP--${Math.random().toString(16).substr(2, 8)}`,
     server: 'mqtts://mqtt.flespi.io',
     username: '6j7r0OrwO8ReQmZk0ZszVe6hvAB8IS4E1ZUPBbbe7QiN28VQVddEg9LBxay3QqyF',
     port: 443,

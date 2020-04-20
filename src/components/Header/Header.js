@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link } from 'react-router-dom';
 // import posed, { PoseGroup } from "react-pose";
 
 
@@ -38,38 +38,46 @@ import arrowLeft from '../../res/icons/icons8-left-50.png';
 // });
 
 
-const Header = () => {
-  return (
-    <header className="w3-container w3-xlarge w3-padding-16 w3-card">
-      <div className="header-container">
-        <Switch>
-          <Route path="/lights">
-            <p>
-              <Link to="/">
-                <img src={arrowLeft} className="icon-back" />
-              </Link>
-              Lights
-              <img src={profilePic} className="user-icon" />
-            </p>
-          </Route>
-          <Route path="/leds">
-            <p>
-              <Link to="/">
-                <img src={arrowLeft} className="icon-back" />
-              </Link>
-              Leds
-              <img src={profilePic} className="user-icon" />
-            </p>
-          </Route>
-          <Route exact path="/">
-            <p>
-              Hello Lorenzo!
-              <img src={profilePic} className="user-icon" />
-            </p>
-          </Route>
-        </Switch>
-      </div>
-    </header>
-)}
+const Header = () => (
+  <header className="w3-container w3-xlarge w3-padding-16 w3-card">
+    <div className="header-container">
+      <Switch>
+        <Route path="/lights">
+          <p>
+            <Link to="/">
+              <img src={arrowLeft} className="icon-back" />
+            </Link>
+            Lights
+            <img src={profilePic} className="user-icon" />
+          </p>
+        </Route>
+        <Route path="/leds">
+          <p>
+            <Link to="/">
+              <img src={arrowLeft} className="icon-back" />
+            </Link>
+            Leds
+            <img src={profilePic} className="user-icon" />
+          </p>
+        </Route>
+        <Route path="/plants">
+          <p>
+            <Link to="/">
+              <img src={arrowLeft} className="icon-back" />
+            </Link>
+            Plants
+            <img src={profilePic} className="user-icon" />
+          </p>
+        </Route>
+        <Route exact path="/">
+          <p>
+            Hello Lorenzo!
+            <img src={profilePic} className="user-icon" />
+          </p>
+        </Route>
+      </Switch>
+    </div>
+  </header>
+);
 
 export default Header;

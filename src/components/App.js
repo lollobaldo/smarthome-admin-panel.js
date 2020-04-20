@@ -1,9 +1,10 @@
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes from 'prop-types';
+import React from 'react';
 
-import { BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import { hot } from "react-hot-loader";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader';
 
 import Main from './Main';
 
@@ -12,6 +13,7 @@ import Main from './Main';
 // component at the top-level.
 
 class App extends React.Component {
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <Router>
@@ -22,7 +24,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element,
 };
 
 export default hot(module)(App);

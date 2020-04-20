@@ -1,1 +1,1 @@
-export { default } from './Devices.js';
+export { default } from './Devices';

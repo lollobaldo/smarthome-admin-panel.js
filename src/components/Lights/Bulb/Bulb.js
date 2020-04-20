@@ -46,6 +46,6 @@ const Bulb = ({ onClick }) => (
 Bulb.propTypes = {
   state: PropTypes.bool.isRequired,
   onClick: PropTypes.func,
-}
+};
 
 export default Bulb;

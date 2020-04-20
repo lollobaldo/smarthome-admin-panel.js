@@ -11,21 +11,21 @@ const Leds = ({ handler, state }) => (
   <div
     className={state ? 'active' : ''}
     style={{
-      'display': 'flex',
-      'justifyContent': 'space-evenly',
-      'alignItems': 'center',
-      'flexDirection': 'column',
-      'height': '100%'}}>
-      {/* <canvas></canvas> */}
+      display: 'flex',
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      flexDirection: 'column',
+      height: '100%',
+    }}>
     <ColourWheel
-      radius={window.innerWidth * .4}
+      radius={window.innerWidth * 0.4}
       padding={10}
       lineWidth={50}
       onColourSelected={handler}
       spacers={{
         colour: '#FFFFFF',
         shadowColour: 'grey',
-        shadowBlur: 5
+        shadowBlur: 5,
       }}
       colour={state}
       animated />

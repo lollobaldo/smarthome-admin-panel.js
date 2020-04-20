@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './Card.scss';
 
-const Card = ({ onClick, name, icon, color, value }) => (
+const Card = ({
+  onClick, name, icon, color, value,
+}) => (
   <div className="w3-card card" onClick={onClick}>
     <FontAwesomeIcon
       icon={icon}
@@ -16,10 +18,12 @@ const Card = ({ onClick, name, icon, color, value }) => (
   </div>
 );
 
-const CardIcon = ({ isActive, onClick, icon, color, bg }) => (
+const CardIcon = ({
+  isActive, onClick, icon, color, bg,
+}) => (
   <div
     className="w3-card card cardicon"
-    style={isActive ? {background: bg} : null}
+    style={isActive ? { background: bg } : null}
     onClick={onClick}>
     <FontAwesomeIcon
       icon={icon}
@@ -46,4 +50,4 @@ CardIcon.propTypes = {
   bg: PropTypes.string,
 };
 
-export default { Card, CardIcon};
+export default { Card, CardIcon };

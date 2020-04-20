@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -12,12 +12,16 @@ import './Body.scss';
 import Cards from '../Card';
 
 const { Card, CardIcon } = Cards;
-const { red, yellow, orange, green, blue } = constants;
+const {
+  red, yellow, orange, green, blue,
+} = constants;
 // const { redG } = constants;
 
 const Presets = ({ presets, activePreset, onPresectSelect }) => (
   <div className="flex presets">
-    {presets.map(({ name, color, bg, icon }, i) => (
+    {presets.map(({
+      name, color, bg, icon,
+    }, i) => (
       <CardIcon
         key={name}
         icon={icon}
@@ -46,10 +50,9 @@ const Settings = () => (
     <Card name="Humidity" icon="tint" color={blue} value="86%"/>
     <Card name="Plants" icon="seedling" color={green} value="86%"/>
   </div>
-)
+);
 
-const Body = ({ presets, activePreset, onPresectSelect }) => {
-  return (
+const Body = ({ presets, activePreset, onPresectSelect }) => (
     <div className="body">
       <h3>Ciao</h3>
       <Presets
@@ -59,7 +62,7 @@ const Body = ({ presets, activePreset, onPresectSelect }) => {
       <h3>Settings</h3>
       <Settings />
     </div>
-)}
+);
 
 Presets.propTypes = {
   presets: PropTypes.array,

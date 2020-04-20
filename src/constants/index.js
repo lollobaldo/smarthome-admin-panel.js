@@ -9,15 +9,17 @@ export const presets = [
     color: red,
     bg: redG,
     icon: 'heart',
-  },{
+  }, {
     name: 'Movie',
     color: purple,
     bg: purpleG,
     icon: 'film',
-  },{
+  }, {
     name: 'Night',
     color: yellow,
     bg: blackG,
     icon: 'moon',
   },
 ];
+
+export default { presets };
