@@ -8,6 +8,18 @@ import CopyPlugin from 'copy-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 // import nodeExternals from 'webpack-node-externals';
 
+// If deploying on Netlify, get API keys
+if (process.env.NETLIFY) {
+  console.log('inside webpack:');
+  console.log(process.env.MQTT_USER);
+  const fs = require('fs');
+  try {
+    const data = fs.readFileSync('.env', 'utf8');
+    console.log(data);
+  } catch (e) {
+    console.log('Error:', e.stack);
+  }
+}
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),

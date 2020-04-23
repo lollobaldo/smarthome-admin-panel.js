@@ -15,9 +15,9 @@ if (process.env.NETLIFY) {
   console.log(process.env.MQTT_USER);
   require('child_process').exec('sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env');
   try {
-    var data = fs.readFileSync('.env', 'utf8');
+    const data = fs.readFileSync('.env', 'utf8');
     console.log(data);
-  } catch(e) {
+  } catch (e) {
     console.log('Error:', e.stack);
   }
 }
