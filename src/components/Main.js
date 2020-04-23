@@ -62,6 +62,10 @@ library.add(
   faArrowLeft,
 );
 
+console.log('Lets figure it out');
+console.log(process.env.NETLIFY);
+console.log(process.env.MQTT_USER);
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
