@@ -5,6 +5,8 @@ import webpack from 'webpack';
 import config from '../webpack.config.prod';
 import {chalkError, chalkSuccess, chalkWarning, chalkProcessing} from './chalkConfig';
 
+const fs = require('fs');
+
 process.env.NODE_ENV = 'production'; // this assures React is built in prod mode and that the Babel dev config doesn't apply.
 
 // If deploying on Netlify, get API keys
@@ -12,7 +14,12 @@ if (process.env.NETLIFY) {
   console.log('Netlify detected, injectinv env variables:');
   console.log(process.env.MQTT_USER);
   require('child_process').exec('sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env');
-  fs.readFile('.env', (err, data) => console.log(data.toString('utf8')));
+  try {
+    var data = fs.readFileSync('.env', 'utf8');
+    console.log(data);
+  } catch(e) {
+    console.log('Error:', e.stack);
+  }
 }
 
 console.log(chalkProcessing('Generating minified bundle. This will take a moment...'));
