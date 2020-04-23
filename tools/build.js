@@ -9,6 +9,8 @@ process.env.NODE_ENV = 'production'; // this assures React is built in prod mode
 
 // If deploying on Netlify, get API keys
 if (process.env.NETLIFY) {
+  console.log('Netlify detected, injectinv env variables:');
+  console.log(process.env.MQTT_USER);
   require('child_process').exec('sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env');
 }
 
