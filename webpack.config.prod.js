@@ -5,7 +5,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import CopyPlugin from 'copy-webpack-plugin';
+import Dotenv from 'dotenv-webpack';
 // import nodeExternals from 'webpack-node-externals';
+
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
@@ -63,6 +65,7 @@ export default {
     new CopyPlugin([
       { from: '_redirects', to: '' },
     ]),
+    new Dotenv(),
   ],
   module: {
     rules: [

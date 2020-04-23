@@ -2,8 +2,6 @@ import { connect } from 'mqtt';
 
 import appConfig from '../mqtt-credentials';
 
-// import Main from '../components/Main';
-
 const { server, ...credentials } = appConfig.mqttCredentials;
 
 let callbacks;
@@ -17,13 +15,13 @@ export const startMqtt = (cbs) => {
     ...credentials,
   };
 
-  console.log('connecting', server, credentialsWithID);
+  console.log('connecting', server);
   client = connect(server, credentialsWithID);
 
   client.on('connect', () => {
     console.log('connected');
     callbacks.onConnect().forEach((topic) => {
-      console.log(`Subscribing to ${topic}`);
+      // console.log(`Subscribing to ${topic}`);
       client.subscribe(topic, (err) => {
         if (err) console.error(err);
       });

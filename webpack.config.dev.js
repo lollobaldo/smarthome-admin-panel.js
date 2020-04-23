@@ -2,7 +2,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
-
+import Dotenv from 'dotenv-webpack';
 // import nodeExternals from 'webpack-node-externals';
 
 export default {
@@ -45,6 +45,7 @@ export default {
       },
       inject: true,
     }),
+    new Dotenv(),
   ],
   module: {
     rules: [

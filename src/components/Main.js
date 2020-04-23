@@ -62,16 +62,6 @@ library.add(
   faArrowLeft,
 );
 
-// const RoutesContainer = posed.div({
-//   enter: {
-//     // opacity: 1,
-//     // delay: 300,
-//     // staggerChildren: 100,
-//     // beforeChildren: true
-//   },
-//   exit: { opacity: 0 }
-// });
-
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -101,7 +91,7 @@ class Main extends React.Component {
       onConnect: this.onMqttConnect,
       onMessage: this.onMqttMessage,
     };
-    console.log('In constructor, calling startMqtT()');
+    console.log('In constructor, calling startMqtt()');
     startMqtt(callbacks);
   }
 
