@@ -1,13 +1,8 @@
 // More info on Webpack's Node API here: https://webpack.js.org/api/node/
 // Allowing console calls below since this is a build file.
 /* eslint-disable no-console */
-import webpack from 'webpack';
-import config from '../webpack.config.prod';
-import {chalkError, chalkSuccess, chalkWarning, chalkProcessing} from './chalkConfig';
 
 const fs = require('fs');
-
-process.env.NODE_ENV = 'production'; // this assures React is built in prod mode and that the Babel dev config doesn't apply.
 
 // If deploying on Netlify, get API keys
 if (process.env.NETLIFY) {
@@ -21,6 +16,12 @@ if (process.env.NETLIFY) {
     console.log('Error:', e.stack);
   }
 }
+
+import webpack from 'webpack';
+import config from '../webpack.config.prod';
+import {chalkError, chalkSuccess, chalkWarning, chalkProcessing} from './chalkConfig';
+
+process.env.NODE_ENV = 'production'; // this assures React is built in prod mode and that the Babel dev config doesn't apply.
 
 console.log(chalkProcessing('Generating minified bundle. This will take a moment...'));
 
