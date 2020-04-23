@@ -12,6 +12,8 @@ if (process.env.NETLIFY) {
   console.log('Netlify detected, injectinv env variables:');
   console.log(process.env.MQTT_USER);
   require('child_process').exec('sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env');
+  const envs = require('child_process').exec('cat .env');
+  console.log(envs);
 }
 
 console.log(chalkProcessing('Generating minified bundle. This will take a moment...'));
