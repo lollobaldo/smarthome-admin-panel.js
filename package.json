@@ -20,6 +20,7 @@
     "prebuild": "npm run lint && npm run clean-dist",
     "build": "babel-node tools/build.js && npm run open:dist",
     "deploy": "babel-node tools/build.js",
+    "deploy:netlify": "sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env && npm run deploy",
     "test": "jest",
     "test:CI": "jest",
     "test:cover": "npm run test -- --coverage ",

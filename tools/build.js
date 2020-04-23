@@ -1,22 +1,6 @@
 // More info on Webpack's Node API here: https://webpack.js.org/api/node/
 // Allowing console calls below since this is a build file.
 /* eslint-disable no-console */
-
-const fs = require('fs');
-
-// If deploying on Netlify, get API keys
-if (process.env.NETLIFY) {
-  console.log('Netlify detected, injectinv env variables:');
-  console.log(process.env.MQTT_USER);
-  require('child_process').exec('sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env');
-  try {
-    const data = fs.readFileSync('.env', 'utf8');
-    console.log(data);
-  } catch (e) {
-    console.log('Error:', e.stack);
-  }
-}
-
 import webpack from 'webpack';
 import config from '../webpack.config.prod';
 import {chalkError, chalkSuccess, chalkWarning, chalkProcessing} from './chalkConfig';
