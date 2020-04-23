@@ -7,6 +7,11 @@ import {chalkError, chalkSuccess, chalkWarning, chalkProcessing} from './chalkCo
 
 process.env.NODE_ENV = 'production'; // this assures React is built in prod mode and that the Babel dev config doesn't apply.
 
+// If deploying on Netlify, get API keys
+if (process.env.NETLIFY) {
+  await require('child_process').exec('sed -i s/MQTT_USER_PLACEHOLDER/${MQTT_USER}/g .env');
+}
+
 console.log(chalkProcessing('Generating minified bundle. This will take a moment...'));
 
 webpack(config).run((error, stats) => {
