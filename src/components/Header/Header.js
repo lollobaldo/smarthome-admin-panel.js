@@ -48,7 +48,7 @@ const Header = () => (
               <img src={arrowLeft} className="icon-back" />
             </Link>
             Lights
-            <img src={profilePic} className="user-icon" />
+            <img src={profilePic} className="user-icon" alt="pic" />
           </p>
         </Route>
         <Route path="/leds">

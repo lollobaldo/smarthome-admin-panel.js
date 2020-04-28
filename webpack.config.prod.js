@@ -7,6 +7,7 @@ import path from 'path';
 import WebpackPwaManifest from 'webpack-pwa-manifest';
 import CopyPlugin from 'copy-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
+import WorkboxPlugin from 'workbox-webpack-plugin';
 
 
 const GLOBALS = {
@@ -26,7 +27,9 @@ export default {
     },
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: [
+    path.resolve(__dirname, 'src/index.js'),
+  ],
   target: 'web',
   mode: 'production',
   output: {
@@ -67,6 +70,7 @@ export default {
       short_name: 'MyPWA',
       description: 'My awesome Progressive Web App!',
       background_color: '#ffffff',
+      theme_color: '#456df5',
       crossorigin: 'use-credentials',
       icons: [
         {
@@ -75,6 +79,12 @@ export default {
           purpose: 'maskable any',
         },
       ],
+    }),
+    new WorkboxPlugin.GenerateSW({
+      // these options encourage the ServiceWorkers to get in there fast
+      // and not allow any straggling "old" SWs to hang around
+      clientsClaim: true,
+      skipWaiting: true,
     }),
     new CopyPlugin([
       { from: '_redirects', to: '' },

@@ -6,10 +6,17 @@ import { AppContainer } from 'react-hot-loader';
 
 import App from './components/App';
 
-import './favicon.ico';
-import './res/icons/logo.png';
-import './res/icons/logo-192x192.png';
-import './res/icons/logo-512x512.png';
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then((reg) => {
+        console.log('Service worker registered! 😎', reg);
+      })
+      .catch((err) => {
+        console.log('😥 Service worker registration failed: ', err);
+      });
+  });
+}
 
 render(
   <AppContainer>

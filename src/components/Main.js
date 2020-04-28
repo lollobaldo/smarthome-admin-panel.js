@@ -69,6 +69,7 @@ console.log(process.env.MQTT_USER);
 class Main extends React.Component {
   constructor(props) {
     super(props);
+
     const defState = {
       presets,
       activePreset: -1,
