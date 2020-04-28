@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
-// import nodeExternals from 'webpack-node-externals';
+import WebpackPwaManifest from 'webpack-pwa-manifest';
 
 export default {
   resolve: {
@@ -14,7 +14,6 @@ export default {
       src: path.resolve(__dirname, 'src'),
       components: path.resolve(__dirname, 'src', 'components'),
       constants: path.resolve(__dirname, 'src', 'constants'),
-      // components: path.resolve(__dirname, './src/components'),
     },
   },
   devtool: 'cheap-module-eval-source-map', // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
@@ -44,6 +43,20 @@ export default {
         collapseWhitespace: true,
       },
       inject: true,
+    }),
+    new WebpackPwaManifest({
+      name: 'My Progressive Web App',
+      short_name: 'MyPWA',
+      description: 'My awesome Progressive Web App!',
+      background_color: '#ffffff',
+      crossorigin: 'use-credentials',
+      icons: [
+        {
+          src: path.resolve('src/res/icons/logo.png'),
+          sizes: [96, 128, 192, 256, 384, 512],
+          purpose: 'maskable any',
+        },
+      ],
     }),
     new Dotenv(),
   ],

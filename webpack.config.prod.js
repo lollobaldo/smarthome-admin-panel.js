@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+import WebpackPwaManifest from 'webpack-pwa-manifest';
 import CopyPlugin from 'copy-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 
@@ -18,14 +19,14 @@ export default {
     extensions: ['*', '.js', '.jsx', '.json'],
     // To support react-hot-loader
     alias: {
-      'react-dom': '@hot-loader/react-dom',
-      src: path.resolve(__dirname, './src'),
-      components: path.resolve(__dirname, './src/components'),
+      // 'react-dom': '@hot-loader/react-dom',
+      src: path.resolve(__dirname, 'src'),
+      components: path.resolve(__dirname, 'src', 'components'),
       constants: path.resolve(__dirname, 'src', 'constants'),
     },
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
-  entry: path.resolve(__dirname, 'src/index'),
+  entry: path.resolve(__dirname, 'src/index.js'),
   target: 'web',
   mode: 'production',
   output: {
@@ -59,7 +60,21 @@ export default {
       inject: true,
       // Note that you can add custom options here if you need to handle other custom logic
       // To track JavaScript errors via TrackJS, sign up for a free trial at TrackJS.com
-      trackJSToken: '',
+      // trackJSToken: '',
+    }),
+    new WebpackPwaManifest({
+      name: 'My Progressive Web App',
+      short_name: 'MyPWA',
+      description: 'My awesome Progressive Web App!',
+      background_color: '#ffffff',
+      crossorigin: 'use-credentials',
+      icons: [
+        {
+          src: path.resolve('src/res/icons/logo.png'),
+          sizes: [96, 128, 192, 256, 384, 512],
+          purpose: 'maskable any',
+        },
+      ],
     }),
     new CopyPlugin([
       { from: '_redirects', to: '' },
