@@ -5,11 +5,27 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-html, body, #app {height: 100%;overscroll-behavior: contain;}
+html, body, #app {
+  height: 100%;
+  // overscroll-behavior: contain;
+}
 
 body {
   // overscroll-behavior: contain;
   margin: 0;
   background: #F5F5F5;
   overflow: hidden;
+}
+
+
+#screen-lock {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000; /* Black background with opacity */
+  z-index: 100; /* Specify a stack order in case you're using a different order for other elements */
 }

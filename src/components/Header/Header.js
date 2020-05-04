@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Switch, Route, Link } from 'react-router-dom';
 // import posed, { PoseGroup } from "react-pose";
 
@@ -8,44 +9,39 @@ import './Header.scss';
 import profilePic from '../../res/pp.jpg';
 import arrowLeft from '../../res/icons/icons8-left-50.png';
 
-// const SpanLeft = posed.p({
-//   enter: {
-//     x: 0,
-//     duration: 150,
-//     delay: 150,
-//   },
-//   exit: {
-//     duration: 150,
-//     x: '-100%',
-//   }
-// });
+const locationsDict = {
+  lights: 'Lights',
+  leds: 'Leds',
+  plants: 'Plants',
+  '': 'Hello Lorenzo!',
+};
 
-// const SpanUp = posed.p({
-//   enter: {
-//     y: 0,
-//     opacity: 1,
-//     delay: 300,
-//     transition: {
-//       y: { type: 'spring', stiffness: 1000, damping: 15 },
-//       default: { duration: 300 }
-//     }
-//   },
-//   exit: {
-//     y: '-100%',
-//     opacity: 0,
-//     transition: { duration: 150 }
-//   }
-// });
-
-
-const Header = () => (
+const Header = ({ location, lockScreen }) => (
   <header className="w3-container w3-xlarge w3-padding-16 w3-card">
     <div className="header-container">
       <Switch>
-        <Route path="/lights">
+        {Object.entries(locationsDict)
+          .map(([path, value]) => (
+            <Route path={`/${path}`} key={path}>
+              <p>
+                {location !== '/'
+                  ? (<Link to='/'>
+                      <img src={arrowLeft}
+                        className="icon-back" />
+                    </Link>)
+                  : null}
+                {value}
+                <img src={profilePic}
+                  onDoubleClick={() => lockScreen(true)}
+                  className="user-icon"
+                  alt="Profile picture" />
+              </p>
+            </Route>
+          ))}
+        {/* <Route path="/lights">
           <p>
             <Link to="/">
-              <img src={arrowLeft} className="icon-back" />
+              <img src={} className="icon-back" />
             </Link>
             Lights
             <img src={profilePic} className="user-icon" alt="pic" />
@@ -57,7 +53,7 @@ const Header = () => (
               <img src={arrowLeft} className="icon-back" />
             </Link>
             Leds
-            <img src={profilePic} className="user-icon" />
+            <img src={profilePic} className="user-icon" alt="pic" />
           </p>
         </Route>
         <Route path="/plants">
@@ -66,18 +62,24 @@ const Header = () => (
               <img src={arrowLeft} className="icon-back" />
             </Link>
             Plants
-            <img src={profilePic} className="user-icon" />
+            <img src={profilePic} className="user-icon" alt="pic" />
           </p>
         </Route>
         <Route exact path="/">
           <p>
             Hello Lorenzo!
-            <img src={profilePic} className="user-icon" />
+            <img src={profilePic} className="user-icon" alt="pic" />
           </p>
-        </Route>
+        </Route> */}
       </Switch>
     </div>
   </header>
 );
+
+Header.propTypes = PropTypes.shape({
+  name: PropTypes.string,
+  location: PropTypes.string,
+  lockScreen: PropTypes.func,
+}).isRequired;
 
 export default Header;

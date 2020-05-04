@@ -46,10 +46,13 @@ export default {
       inject: true,
     }),
     new WebpackPwaManifest({
-      name: 'My Progressive Web App',
-      short_name: 'MyPWA',
-      description: 'My awesome Progressive Web App!',
+      name: 'My SmartHome',
+      short_name: 'MyMoSA2.0',
+      description: 'My awesome Progressive Web App for my Smart home system!',
       background_color: '#ffffff',
+      theme_color: '#456df5',
+      display: 'fullscreen',
+      orientation: 'landscape',
       crossorigin: 'use-credentials',
       icons: [
         {

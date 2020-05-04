@@ -74,6 +74,7 @@ class Main extends React.Component {
       presets,
       activePreset: -1,
       name: 'Lorenzo',
+      screenLocked: false,
       mqtt: false,
       mqttState: {
         lights: {
@@ -116,6 +117,10 @@ class Main extends React.Component {
         parseMqttMessage(message),
       ),
     });
+    if (topic === 'lights/leds') {
+      const metaThemeColor = document.querySelector('meta[name=theme-color]');
+      metaThemeColor.setAttribute('content', message);
+    }
     // console.log(this.state);
   }
 
@@ -124,8 +129,12 @@ class Main extends React.Component {
     this.setState({ activePreset: i === activePreset ? -1 : i });
   }
 
+  lockScreen = (b) => {
+    console.log(`${!b && 'un'}locking screen`);
+    this.setState({ screenLocked: b });
+  }
+
   onLightSwitch = () => {
-    // alert('called');
     const { lights } = this.state.mqttState;
     const newState = !lights.floorlamp;
     this.setState(
@@ -163,31 +172,49 @@ class Main extends React.Component {
     const { lights, plants } = this.state.mqttState;
     return (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        { this.state.screenLocked
+          ? <div id='screen-lock'
+              onDoubleClick={() => this.lockScreen(false)}></div>
+          : null }
         <Switch>
           {/* <PoseGroup style={{height: '100%'}}>
             <RoutesContainer key={location.pathname}> */}
               <Route path="/lights">
-                <Header name={name} location={location.pathname} />
+                <Header
+                  name={name}
+                  location={location.pathname}
+                  locked={this.state.screenLocked}
+                  lockScreen={this.lockScreen} />
                 <Lights
                   handler={this.onLightSwitch}
                   state={lights.floorlamp} />
               </Route>
               <Route path="/leds">
-                <Header name={name} location={location.pathname} />
-                {/* <Remote
-                  handler={this.onLedsChange} /> */}
+              <Header
+                  name={name}
+                  location={location.pathname}
+                  locked={this.state.screenLocked}
+                  lockScreen={this.lockScreen} />
                 <Leds
                   handler={this.onLedsChange}
                   state={lights.leds} />
               </Route>
               <Route path="/plants">
-                <Header name={name} location={location.pathname} />
+                <Header
+                  name={name}
+                  location={location.pathname}
+                  locked={this.state.screenLocked}
+                  lockScreen={this.lockScreen} />
                 <Plants
                   state={plants}
                   plantsDetails={plantDetails} />
               </Route>
               <Route exact>
-                <Header name={name} location={location.pathname} />
+                <Header
+                  name={name}
+                  location={location.pathname}
+                  locked={this.state.screenLocked}
+                  lockScreen={this.lockScreen} />
                 <Home
                   presets={presets}
                   activePreset={activePreset}
