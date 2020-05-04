@@ -72,7 +72,6 @@ export default {
       background_color: '#ffffff',
       theme_color: '#456df5',
       display: 'fullscreen',
-      orientation: 'landscape',
       crossorigin: 'use-credentials',
       icons: [
         {
