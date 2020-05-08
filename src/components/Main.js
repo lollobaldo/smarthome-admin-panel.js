@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 // import posed, { PoseGroup } from "react-pose";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -29,6 +29,7 @@ import plantDetails from 'src/plantsDetails';
 import { presets } from '../constants';
 import './Main.scss';
 import Header from './Header';
+import Sidebar from './Sidebar';
 // import Footer from './Footer';
 import Home from './Home';
 import Lights from './Lights';
@@ -61,10 +62,6 @@ library.add(
   faMoon,
   faArrowLeft,
 );
-
-console.log('Lets figure it out');
-console.log(process.env.NETLIFY);
-console.log(process.env.MQTT_USER);
 
 class Main extends React.Component {
   constructor(props) {
@@ -101,15 +98,19 @@ class Main extends React.Component {
     startMqtt(callbacks);
   }
 
+  pages = {
+    lights: 'Lights',
+    leds: 'Leds',
+    plants: 'Plants',
+    '': 'Hello Lorenzo!',
+  };
+
   onMqttConnect = () => {
     this.setState({ mqtt: true });
-    // console.log('mqtt onConnect called');
     return getKeys(this.state.mqttState);
   }
 
   onMqttMessage = (topic, message) => {
-    // console.log(`Message on topic ${topic}: ${message.toString()}`);
-    // console.log((message))
     this.setState({
       mqttState: assignWithPath(
         this.state.mqttState,
@@ -121,7 +122,6 @@ class Main extends React.Component {
       const metaThemeColor = document.querySelector('meta[name=theme-color]');
       metaThemeColor.setAttribute('content', message);
     }
-    // console.log(this.state);
   }
 
   onPresectSelect = (i) => {
@@ -172,57 +172,43 @@ class Main extends React.Component {
     const { lights, plants } = this.state.mqttState;
     return (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        { this.state.screenLocked
-          ? <div id='screen-lock'
+        <Route path="/">
+        <Header
+            name={name}
+            location={location.pathname}
+            locked={this.state.screenLocked}
+            lockScreen={this.lockScreen} />
+          <Sidebar
+            name={name}
+            location={location.pathname}
+            locked={this.state.screenLocked}
+            lockScreen={this.lockScreen} />
+          { this.state.screenLocked
+            ? <div id='screen-lock'
               onDoubleClick={() => this.lockScreen(false)}></div>
-          : null }
-        <Switch>
-          {/* <PoseGroup style={{height: '100%'}}>
-            <RoutesContainer key={location.pathname}> */}
-              <Route path="/lights">
-                <Header
-                  name={name}
-                  location={location.pathname}
-                  locked={this.state.screenLocked}
-                  lockScreen={this.lockScreen} />
-                <Lights
-                  handler={this.onLightSwitch}
-                  state={lights.floorlamp} />
-              </Route>
-              <Route path="/leds">
-              <Header
-                  name={name}
-                  location={location.pathname}
-                  locked={this.state.screenLocked}
-                  lockScreen={this.lockScreen} />
-                <Leds
-                  handler={this.onLedsChange}
-                  state={lights.leds} />
-              </Route>
-              <Route path="/plants">
-                <Header
-                  name={name}
-                  location={location.pathname}
-                  locked={this.state.screenLocked}
-                  lockScreen={this.lockScreen} />
-                <Plants
-                  state={plants}
-                  plantsDetails={plantDetails} />
-              </Route>
-              <Route exact>
-                <Header
-                  name={name}
-                  location={location.pathname}
-                  locked={this.state.screenLocked}
-                  lockScreen={this.lockScreen} />
-                <Home
-                  presets={presets}
-                  activePreset={activePreset}
-                  onPresectSelect={(i) => this.onPresectSelect(i)} />
-              </Route>
-            {/* </RoutesContainer>
-          </PoseGroup> */}
-        </Switch>
+            : null }
+        </Route>
+        <Route exact path="/">
+          <Home
+            presets={presets}
+            activePreset={activePreset}
+            onPresectSelect={(i) => this.onPresectSelect(i)} />
+        </Route>
+        <Route path="/lights">
+          <Lights
+            handler={this.onLightSwitch}
+            state={lights.floorlamp} />
+        </Route>
+        <Route path="/leds">
+          <Leds
+            handler={this.onLedsChange}
+            state={lights.leds} />
+        </Route>
+        <Route path="/plants">
+          <Plants
+            state={plants}
+            plantsDetails={plantDetails} />
+        </Route>
       </div>
     );
   }
