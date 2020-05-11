@@ -34,3 +34,9 @@ header {
   width: 1.5em;
   border-radius: 100%;
 }
+
+@media only screen and (orientation: landscape) {
+  header {
+    display: none;
+  }
+}

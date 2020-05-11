@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, withRouter } from 'react-router-dom';
-// import posed, { PoseGroup } from "react-pose";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -30,6 +29,7 @@ import { presets } from '../constants';
 import './Main.scss';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Screenlock from './Screenlock';
 // import Footer from './Footer';
 import Home from './Home';
 import Lights from './Lights';
@@ -63,32 +63,41 @@ library.add(
   faArrowLeft,
 );
 
+
 class Main extends React.Component {
+  static pages = {
+    lights: 'Lights',
+    leds: 'Leds',
+    plants: 'Plants',
+    '': 'Hello Lorenzo!',
+  };
+
+  static defState = {
+    presets,
+    activePreset: -1,
+    name: 'Lorenzo',
+    screenLocked: false,
+    mqtt: false,
+    mqttState: {
+      lights: {
+        floorlamp: false,
+        leds: '#ffbb00',
+      },
+      plants: {
+        p1: 0,
+        p2: 0,
+        p3: 0,
+        p4: 0,
+        p5: 0,
+      },
+    },
+  };
+
   constructor(props) {
     super(props);
 
-    const defState = {
-      presets,
-      activePreset: -1,
-      name: 'Lorenzo',
-      screenLocked: false,
-      mqtt: false,
-      mqttState: {
-        lights: {
-          floorlamp: false,
-          leds: '#ffbb00',
-        },
-        plants: {
-          p1: 0,
-          p2: 0,
-          p3: 0,
-          p4: 0,
-          p5: 0,
-        },
-      },
-    };
-    console.log(getKeys(defState.mqttState));
-    this.state = defState;
+    console.log(getKeys(Main.defState.mqttState));
+    this.state = Main.defState;
 
     const callbacks = {
       onConnect: this.onMqttConnect,
@@ -97,13 +106,6 @@ class Main extends React.Component {
     console.log('In constructor, calling startMqtt()');
     startMqtt(callbacks);
   }
-
-  pages = {
-    lights: 'Lights',
-    leds: 'Leds',
-    plants: 'Plants',
-    '': 'Hello Lorenzo!',
-  };
 
   onMqttConnect = () => {
     this.setState({ mqtt: true });
@@ -130,7 +132,7 @@ class Main extends React.Component {
   }
 
   lockScreen = (b) => {
-    console.log(`${!b && 'un'}locking screen`);
+    console.log(`${b ? '' : 'un'}locking screen`);
     this.setState({ screenLocked: b });
   }
 
@@ -164,35 +166,29 @@ class Main extends React.Component {
   }
 
   render() {
+    const { location } = this.props;
     const {
       activePreset,
       name,
     } = this.state;
-    const { location } = this.props;
     const { lights, plants } = this.state.mqttState;
     return (
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <Route path="/">
+      // Need to wrap components
+      <div>
         <Header
-            name={name}
-            location={location.pathname}
-            locked={this.state.screenLocked}
-            lockScreen={this.lockScreen} />
-          <Sidebar
-            name={name}
-            location={location.pathname}
-            locked={this.state.screenLocked}
-            lockScreen={this.lockScreen} />
-          { this.state.screenLocked
-            ? <div id='screen-lock'
-              onDoubleClick={() => this.lockScreen(false)}></div>
-            : null }
-        </Route>
+          onLock={() => this.lockScreen(true)}
+          name={name}
+          location={location.pathname} />
+        <Sidebar
+          name={name} />
+        <Screenlock
+          onUnlock={() => this.lockScreen(false)}
+          locked={this.state.screenLocked} />
         <Route exact path="/">
           <Home
+            onPresectSelect={(i) => this.onPresectSelect(i)}
             presets={presets}
-            activePreset={activePreset}
-            onPresectSelect={(i) => this.onPresectSelect(i)} />
+            activePreset={activePreset} />
         </Route>
         <Route path="/lights">
           <Lights
