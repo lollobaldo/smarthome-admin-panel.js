@@ -6,6 +6,7 @@ import Dotenv from 'dotenv-webpack';
 import WebpackPwaManifest from 'webpack-pwa-manifest';
 import WorkboxPlugin from 'workbox-webpack-plugin';
 
+
 export default {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],

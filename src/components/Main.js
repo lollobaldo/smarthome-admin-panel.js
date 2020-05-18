@@ -180,7 +180,7 @@ class Main extends React.Component {
           name={name}
           location={location.pathname} />
         <Sidebar
-          name={name} />
+          pages={Main.pages} />
         <Screenlock
           onUnlock={() => this.lockScreen(false)}
           locked={this.state.screenLocked} />

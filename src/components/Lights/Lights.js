@@ -13,6 +13,7 @@ const Lights = ({ handler, state }) => (
       alignItems: 'center',
       flexDirection: 'column',
       height: '100%',
+      width: '100%',
     }}>
     <div className='bg-yellow'></div>
     <Bulb state={state} onClick={handler} />
