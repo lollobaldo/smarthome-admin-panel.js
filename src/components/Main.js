@@ -82,6 +82,12 @@ class Main extends React.Component {
     plants: 'Plants',
   };
 
+  static screenLockStatus = {
+    UNLOCKED: 1,
+    BLACK: 2,
+    LOCKED: 3,
+  };
+
   static pages = [
     {
       path: '',
@@ -110,7 +116,7 @@ class Main extends React.Component {
     presets,
     activePreset: -1,
     name: 'Lorenzo',
-    screenLocked: false,
+    screenLocked: Main.screenLockStatus.UNLOCKED,
     mqtt: false,
     mqttState: {
       lights: {
@@ -165,16 +171,20 @@ class Main extends React.Component {
     this.setState({ activePreset: i === activePreset ? -1 : i });
   }
 
-  lockScreen = (b) => {
-    console.log(`${b ? '' : 'un'}locking screen`);
-    this.setState({ screenLocked: b });
-    if (b) {
-      // eslint-disable-next-line no-undef
-      AndroidWrapper.turnOffLCD();
-    } else {
-      // eslint-disable-next-line no-undef
-      AndroidWrapper.turnOnLCD();
-    }
+  lockScreen = (pin) => {
+    console.log('Locking screen');
+    this.setState({
+      screenLocked:
+        pin ? Main.screenLockStatus.LOCKED
+          : Main.screenLockStatus.BLACK,
+    });
+    window.AndroidWrapper.turnOffLCD();
+  }
+
+  unlockScreen = () => {
+    console.log('Unlocking screen');
+    this.setState({ screenLocked: Main.screenLockStatus.UNLOCKED });
+    window.AndroidWrapper.turnOnLCD();
   }
 
   onLightSwitch = () => {
@@ -220,14 +230,16 @@ class Main extends React.Component {
       // Need to wrap components
       <div>
         <Header
-          onLock={() => this.lockScreen(true)}
+          onLock={() => this.lockScreen(false)}
           name={name}
           location={location.pathname} />
         <Sidebar
-          pages={Main.pages} />
+          pages={Main.pages}
+          lockWithPin={() => this.lockScreen(true)}
+          lockWithoutPin={() => this.lockScreen(false)} />
         <Screenlock
-          onUnlock={() => this.lockScreen(false)}
-          locked={this.state.screenLocked} />
+          onUnlock={() => this.unlockScreen()}
+          locked={this.state.screenLocked !== Main.screenLockStatus.UNLOCKED} />
         <Route exact path="/">
           <Home
             onPresectSelect={(i) => this.onPresectSelect(i)}
