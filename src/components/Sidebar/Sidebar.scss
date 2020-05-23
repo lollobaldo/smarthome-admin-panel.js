@@ -1,5 +1,31 @@
-@media only screen and (orientation: portrait) {
+.nav {
+  background: white;
+  text-align: center;
+
+  header {
+    padding: 16px;
+    font-weight: bold;
+
+    .sidebar-icon {
+      height: 1.8em;
+    }
+  }
+
   nav {
+    display: inline-block;
+
+    p {
+      width: fit-content;
+    }
+
+    .sidebar-icon {
+      height: 1.5em;
+    }
+  }
+}
+
+@media only screen and (orientation: portrait) {
+  .nav {
     display: none;
   }
 }

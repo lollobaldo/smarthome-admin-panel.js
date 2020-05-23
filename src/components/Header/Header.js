@@ -17,7 +17,7 @@ const locationsDict = {
 };
 
 const Header = ({ location, onLock }) => (
-  <header className="w3-container w3-xlarge w3-padding-16 w3-card">
+  <header className="header w3-container w3-xlarge w3-padding-16 w3-card">
     <div className="header-container">
       <p>
         {location !== '/'
@@ -28,7 +28,7 @@ const Header = ({ location, onLock }) => (
           : null}
         {locationsDict[location]}
         <img src={profilePic}
-          onDoubleClick={onLock}
+          onClick={onLock}
           className="user-icon"
           alt="Profile picture" />
       </p>

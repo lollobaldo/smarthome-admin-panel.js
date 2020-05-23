@@ -22,8 +22,17 @@ import { faUserCircle, faHeart as fasHeart, faLightbulb as fasLightBulb } from '
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-// eslint-disable-next-line import/no-unresolved
 import plantDetails from 'src/plantsDetails';
+// import logo from 'res/icons/logo.png';
+import home from 'res/icons/home.svg';
+import light from 'res/icons/light-lamp.svg';
+import colorWheel2 from 'res/icons/color-wheel-2.svg';
+// import rgbLamp from 'res/icons/light-rgb.svg';
+import plant from 'res/icons/plant-potted.svg';
+import heating from 'res/icons/heating.svg';
+// import thermometer from 'res/icons/thermometer.svg';
+// import plant from 'res/icons/plant-potted.svg';
+
 
 import { presets } from '../constants';
 import './Main.scss';
@@ -36,6 +45,7 @@ import Lights from './Lights';
 import Leds from './Leds';
 // import Remote from './Remote';
 import Plants from './Plants';
+
 
 import {
   getKeys,
@@ -66,11 +76,35 @@ library.add(
 
 class Main extends React.Component {
   static pages = {
+    '': 'Hello Lorenzo!',
     lights: 'Lights',
     leds: 'Leds',
     plants: 'Plants',
-    '': 'Hello Lorenzo!',
   };
+
+  static pages = [
+    {
+      path: '',
+      label: 'Hello Lorenzo!',
+      icon: home,
+    },
+    {
+      path: 'lights',
+      icon: light,
+    },
+    {
+      path: 'leds',
+      icon: colorWheel2,
+    },
+    {
+      path: 'plants',
+      icon: plant,
+    },
+    {
+      path: 'heating',
+      icon: heating,
+    },
+  ];
 
   static defState = {
     presets,
@@ -134,6 +168,13 @@ class Main extends React.Component {
   lockScreen = (b) => {
     console.log(`${b ? '' : 'un'}locking screen`);
     this.setState({ screenLocked: b });
+    if (b) {
+      // eslint-disable-next-line no-undef
+      AndroidWrapper.turnOffLCD();
+    } else {
+      // eslint-disable-next-line no-undef
+      AndroidWrapper.turnOnLCD();
+    }
   }
 
   onLightSwitch = () => {
@@ -147,6 +188,9 @@ class Main extends React.Component {
       ),
     );
     safePublish('lights/floorlamp', newState);
+
+    // eslint-disable-next-line no-undef
+    AndroidWrapper.showToast('Warojoia');
   }
 
   onLedsChange = (colour) => {

@@ -19,6 +19,10 @@ body {
   overflow: hidden;
 }
 
+a {
+  text-decoration: none;
+}
+
 @media only screen and (orientation: landscape) {
   #app, #app > div {
     flex-direction: row;

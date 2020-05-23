@@ -24,6 +24,9 @@ export default {
       src: path.resolve(__dirname, 'src'),
       components: path.resolve(__dirname, 'src', 'components'),
       constants: path.resolve(__dirname, 'src', 'constants'),
+      res: path.resolve(__dirname, 'src', 'res'),
+      icons: path.resolve(__dirname, 'src', 'res', 'icons'),
+      utils: path.resolve(__dirname, 'src', 'utils'),
     },
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/

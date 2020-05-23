@@ -10,6 +10,7 @@
     "preinstall": "node tools/nodeVersionCheck.js",
     "start-message": "babel-node tools/startMessage.js",
     "prestart": "npm run start-message",
+    "fix-resolver": "npx babel webpack.config.dev.js --out-file webpack.resolver.js",
     "start": "concurrently -k -r -s first \"npm run open:src\" \"npm run lint:watch\"",
     "open:src": "babel-node tools/srcServer.js",
     "open:dist": "babel-node tools/distServer.js",
@@ -176,7 +177,8 @@
     }
   },
   "eslintIgnore": [
-    "tools/*.js"
+    "tools/*.js",
+    "webpack.resolver.js"
   ],
   "eslintConfig": {
     "env": {
@@ -223,7 +225,11 @@
       "no-console": "off"
     },
     "settings": {
-      "import/resolver": "webpack"
+      "import/resolver": {
+        "webpack": {
+          "config": "webpack.resolver.js"
+        }
+      }
     }
   }
 }

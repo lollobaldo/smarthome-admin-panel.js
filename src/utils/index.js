@@ -1,5 +1,14 @@
 import dottie from 'dottie';
 
+// Hacky way to toTitleCase (from SO)
+export const toTitleCase = (str) => (
+  str.replace(
+    /\w\S*/g,
+    (txt) => (
+      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    ),
+  ));
+
 // getKeys :: obj -> [keys]
 export const getKeys = (obj, prefix = '') => (
   Object.keys(obj).reduce((res, el) => {
