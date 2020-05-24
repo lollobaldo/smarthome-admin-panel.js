@@ -85,7 +85,8 @@ class Main extends React.Component {
   static screenLockStatus = {
     UNLOCKED: 1,
     BLACK: 2,
-    LOCKED: 3,
+    PIN_LOCKED: 3,
+    INSERTING_PIN: 4,
   };
 
   static pages = [
@@ -116,6 +117,7 @@ class Main extends React.Component {
     presets,
     activePreset: -1,
     name: 'Lorenzo',
+    pin: 2509,
     screenLocked: Main.screenLockStatus.UNLOCKED,
     mqtt: false,
     mqttState: {
@@ -171,20 +173,24 @@ class Main extends React.Component {
     this.setState({ activePreset: i === activePreset ? -1 : i });
   }
 
-  lockScreen = (pin) => {
+  lockScreen = (pinRequired) => {
     console.log('Locking screen');
     this.setState({
       screenLocked:
-        pin ? Main.screenLockStatus.LOCKED
+        pinRequired ? Main.screenLockStatus.INSERTING_PIN
           : Main.screenLockStatus.BLACK,
     });
-    window.AndroidWrapper.turnOffLCD();
+    if (window.AndroidWrapper) {
+      window.AndroidWrapper.turnOffLCD();
+    }
   }
 
   unlockScreen = () => {
     console.log('Unlocking screen');
     this.setState({ screenLocked: Main.screenLockStatus.UNLOCKED });
-    window.AndroidWrapper.turnOnLCD();
+    if (window.AndroidWrapper) {
+      window.AndroidWrapper.turnOnLCD();
+    }
   }
 
   onLightSwitch = () => {
@@ -198,9 +204,6 @@ class Main extends React.Component {
       ),
     );
     safePublish('lights/floorlamp', newState);
-
-    // eslint-disable-next-line no-undef
-    AndroidWrapper.showToast('Warojoia');
   }
 
   onLedsChange = (colour) => {
@@ -237,9 +240,12 @@ class Main extends React.Component {
           pages={Main.pages}
           lockWithPin={() => this.lockScreen(true)}
           lockWithoutPin={() => this.lockScreen(false)} />
-        <Screenlock
-          onUnlock={() => this.unlockScreen()}
-          locked={this.state.screenLocked !== Main.screenLockStatus.UNLOCKED} />
+        { this.state.screenLocked !== Main.screenLockStatus.UNLOCKED
+          ? <Screenlock
+              onUnlock={() => this.unlockScreen()}
+              pin={this.state.pin}
+              status={this.state.screenLocked} />
+          : null}
         <Route exact path="/">
           <Home
             onPresectSelect={(i) => this.onPresectSelect(i)}

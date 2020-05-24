@@ -1,6 +1,9 @@
 .screen-lock {
-  &--locked {
-    display: block;
+  &--locked, &--pin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -12,7 +15,37 @@
     z-index: 100;
   }
 
-  &--unlocked {
-    display: none;
+  &--pin {
+    background-color: #456df5;
+  }
+}
+
+body {
+  background: #3498db;
+}
+
+.screen-lock-pin {
+  background: #f5f5f5;
+  width: 300px;
+  height: 400px;
+  padding: 30px;
+
+  .dots {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 20%;
+    padding: 0 16px;
+    border: 1px solid #ccc;
+    font-size: xxx-large;
+    font-weight: bold;
+  }
+
+  input {
+    width: 33%;
+    height: 20%;
+    border: 0;
+    background: none;
+    font-size: large;
   }
 }
