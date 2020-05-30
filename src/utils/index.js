@@ -1,5 +1,7 @@
 import dottie from 'dottie';
 
+import { pages } from './constants';
+
 // Hacky way to toTitleCase (from SO)
 export const toTitleCase = (str) => (
   str.replace(
@@ -8,6 +10,14 @@ export const toTitleCase = (str) => (
       txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
     ),
   ));
+
+export const path2page = (path) => (
+  pages.filter((p) => p.path === path)[0]
+);
+
+export const path2title = (path) => (
+  toTitleCase(path.slice(1))
+);
 
 // getKeys :: obj -> [keys]
 export const getKeys = (obj, prefix = '') => (

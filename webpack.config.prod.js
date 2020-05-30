@@ -23,7 +23,6 @@ export default {
       // 'react-dom': '@hot-loader/react-dom',
       src: path.resolve(__dirname, 'src'),
       components: path.resolve(__dirname, 'src', 'components'),
-      constants: path.resolve(__dirname, 'src', 'constants'),
       res: path.resolve(__dirname, 'src', 'res'),
       icons: path.resolve(__dirname, 'src', 'res', 'icons'),
       utils: path.resolve(__dirname, 'src', 'utils'),

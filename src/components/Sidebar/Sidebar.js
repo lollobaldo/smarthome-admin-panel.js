@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { toTitleCase } from 'src/utils';
+import { path2title } from 'src/utils';
 
 import logo from 'res/icons/logo.png';
 import iconLock from 'res/icons/lock-round.svg';
@@ -22,14 +22,14 @@ const Sidebar = ({ pages, lockWithPin, lockWithoutPin }) => (
     <hr />
     <nav>
       {/* <div> */}
-        {pages.map(({ path, label, icon }) => (
+        {pages.map(({ path, title, icon }) => (
           <p key={path}>
             <Link to={path}>
               <img
                 className="sidebar-icon"
                 src={icon}
-                alt={label || toTitleCase(path)} />
-              {label || toTitleCase(path)}
+                alt={title || path2title(path)} />
+              {title || path2title(path)}
             </Link>
           </p>
         ))}

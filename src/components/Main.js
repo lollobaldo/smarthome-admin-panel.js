@@ -20,21 +20,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faUserCircle, faHeart as fasHeart, faLightbulb as fasLightBulb } from '@fortawesome/free-regular-svg-icons';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import plantDetails from 'src/plantsDetails';
-// import logo from 'res/icons/logo.png';
-import home from 'res/icons/home.svg';
-import light from 'res/icons/light-lamp.svg';
-import colorWheel2 from 'res/icons/color-wheel-2.svg';
-// import rgbLamp from 'res/icons/light-rgb.svg';
-import plant from 'res/icons/plant-potted.svg';
-import heating from 'res/icons/heating.svg';
-// import thermometer from 'res/icons/thermometer.svg';
-// import plant from 'res/icons/plant-potted.svg';
 
-
-import { presets } from '../constants';
 import './Main.scss';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -48,6 +35,10 @@ import Plants from './Plants';
 
 
 import {
+  pages, defState, presets, screenLockStatus,
+} from '../utils/constants';
+import {
+  path2page,
   getKeys,
   assignWithPath,
   parseMqttMessage,
@@ -75,71 +66,11 @@ library.add(
 
 
 class Main extends React.Component {
-  static pages = {
-    '': 'Hello Lorenzo!',
-    lights: 'Lights',
-    leds: 'Leds',
-    plants: 'Plants',
-  };
-
-  static screenLockStatus = {
-    UNLOCKED: 1,
-    BLACK: 2,
-    PIN_LOCKED: 3,
-    INSERTING_PIN: 4,
-  };
-
-  static pages = [
-    {
-      path: '',
-      label: 'Hello Lorenzo!',
-      icon: home,
-    },
-    {
-      path: 'lights',
-      icon: light,
-    },
-    {
-      path: 'leds',
-      icon: colorWheel2,
-    },
-    {
-      path: 'plants',
-      icon: plant,
-    },
-    {
-      path: 'heating',
-      icon: heating,
-    },
-  ];
-
-  static defState = {
-    presets,
-    activePreset: -1,
-    name: 'Lorenzo',
-    pin: 2509,
-    screenLocked: Main.screenLockStatus.UNLOCKED,
-    mqtt: false,
-    mqttState: {
-      lights: {
-        floorlamp: false,
-        leds: '#ffbb00',
-      },
-      plants: {
-        p1: 0,
-        p2: 0,
-        p3: 0,
-        p4: 0,
-        p5: 0,
-      },
-    },
-  };
-
   constructor(props) {
     super(props);
 
-    console.log(getKeys(Main.defState.mqttState));
-    this.state = Main.defState;
+    console.log(getKeys(defState.mqttState));
+    this.state = defState;
 
     const callbacks = {
       onConnect: this.onMqttConnect,
@@ -177,8 +108,8 @@ class Main extends React.Component {
     console.log('Locking screen');
     this.setState({
       screenLocked:
-        pinRequired ? Main.screenLockStatus.INSERTING_PIN
-          : Main.screenLockStatus.BLACK,
+        pinRequired ? screenLockStatus.INSERTING_PIN
+          : screenLockStatus.BLACK,
     });
     if (window.AndroidWrapper) {
       window.AndroidWrapper.turnOffLCD();
@@ -187,7 +118,7 @@ class Main extends React.Component {
 
   unlockScreen = () => {
     console.log('Unlocking screen');
-    this.setState({ screenLocked: Main.screenLockStatus.UNLOCKED });
+    this.setState({ screenLocked: screenLockStatus.UNLOCKED });
     if (window.AndroidWrapper) {
       window.AndroidWrapper.turnOnLCD();
     }
@@ -235,12 +166,12 @@ class Main extends React.Component {
         <Header
           onLock={() => this.lockScreen(false)}
           name={name}
-          location={location.pathname} />
+          page={path2page(location.pathname)} />
         <Sidebar
-          pages={Main.pages}
+          pages={pages}
           lockWithPin={() => this.lockScreen(true)}
           lockWithoutPin={() => this.lockScreen(false)} />
-        { this.state.screenLocked !== Main.screenLockStatus.UNLOCKED
+        { this.state.screenLocked !== screenLockStatus.UNLOCKED
           ? <Screenlock
               onUnlock={() => this.unlockScreen()}
               pin={this.state.pin}

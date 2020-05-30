@@ -38,7 +38,6 @@ var _default = {
       'react-dom': '@hot-loader/react-dom',
       src: _path.default.resolve(__dirname, 'src'),
       components: _path.default.resolve(__dirname, 'src', 'components'),
-      constants: _path.default.resolve(__dirname, 'src', 'constants'),
       res: _path.default.resolve(__dirname, 'src', 'res'),
       icons: _path.default.resolve(__dirname, 'src', 'res', 'icons'),
       utils: _path.default.resolve(__dirname, 'src', 'utils')
@@ -61,6 +60,7 @@ var _default = {
   plugins: [new _hardSourceWebpackPlugin.default(), new _webpack.default.HotModuleReplacementPlugin(), new _webpack.default.NoEmitOnErrorsPlugin(), new _htmlWebpackPlugin.default({
     // Create HTML file that includes references to bundled CSS and JS.
     template: 'src/index.ejs',
+    favicon: 'src/res/icons/logo.png',
     minify: {
       removeComments: true,
       collapseWhitespace: true

@@ -38,7 +38,7 @@ const ScreenlockPin = ({ onUnlock, correctPin }) => {
 
   return (
     <div
-      className="screen-lock-pin w3-card"
+      className="screen-lock-pin w3-card-4"
       onDoubleClick={onUnlock}>
         <div className="dots">
           {pin.split('').map((_, i) => (

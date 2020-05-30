@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-// eslint-disable-next-line import/no-unresolved
 import Cards from 'components/Card';
 
-// eslint-disable-next-line import/no-unresolved
-import constants from 'constants/_constants.scss';
+import constants from 'utils/_constants.scss';
 
 import './Devices.scss';
 
