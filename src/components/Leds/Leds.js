@@ -7,16 +7,17 @@ import './Leds.scss';
 
 // import { crossTrice } from '../../utils';
 
+const colours = [
+  '#00C3A9', '#00B720', '#008813',
+  '#000000', '#FFFFFF',
+  '#F8E300', '#FF6400', '#E20000',
+  '#AC000D', '#9E005F', '#6D0E82',
+  '#3B3887', '#175FDA', '#0091E2',
+  '#00BCED', '#14E4C5',
+];
+
 const Leds = ({ handler, state }) => (
-  <div
-    className={state ? 'active' : ''}
-    style={{
-      display: 'flex',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      flexDirection: 'column',
-      height: '100%',
-    }}>
+  <div className='colour-wheel-container'>
     <ColourWheel
       radius={window.innerWidth * 0.4}
       padding={10}
@@ -24,10 +25,11 @@ const Leds = ({ handler, state }) => (
       onColourSelected={handler}
       spacers={{
         colour: '#FFFFFF',
-        shadowColour: 'grey',
-        shadowBlur: 5,
+        // shadowColour: 'grey',
+        // shadowBlur: 5,
       }}
       colour={state}
+      colours={colours}
       animated />
   </div>
 );

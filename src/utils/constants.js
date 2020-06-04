@@ -32,6 +32,10 @@ export const pages = [
     path: '/heating',
     icon: heating,
   },
+  {
+    path: '/trial',
+    icon: null,
+  },
 ];
 
 

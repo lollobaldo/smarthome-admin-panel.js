@@ -30,6 +30,7 @@ import Screenlock from './Screenlock';
 import Home from './Home';
 import Lights from './Lights';
 import Leds from './Leds';
+import ColorWheel from './ColorWheel';
 // import Remote from './Remote';
 import Plants from './Plants';
 
@@ -197,6 +198,9 @@ class Main extends React.Component {
           <Plants
             state={plants}
             plantsDetails={plantDetails} />
+        </Route>
+        <Route path="/trial">
+          <ColorWheel />
         </Route>
       </div>
     );

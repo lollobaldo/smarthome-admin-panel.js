@@ -5,11 +5,15 @@ export function produceRgbShades(r, g, b, amount) {
 
   const hsl = tinycolor(`rgb(${r}, ${g}, ${b})`).toHsl();
 
+  // hsl.l = 1;
+  // shades.push(tinycolor(hsl).toRgb());
   for (let i = 9; i > 1; i -= 8 / amount) {
     // Decrements from 9 - 1; i being what luminosity (hsl.l) is multiplied by.
     hsl.l = 0.1 * i;
     shades.push(tinycolor(hsl).toRgb());
   }
+  // hsl.l = 0;
+  // shades.push(tinycolor(hsl).toRgb());
 
   return shades;
 }
