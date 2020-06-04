@@ -38,6 +38,7 @@ export const startMqtt = (cbs) => {
 export const safePublish = (topic, message, options) => {
   const t = topic;
   const m = (typeof message === 'string') ? message : JSON.stringify(message);
-  client.publish(t, m, options);
+  const o = { retain: true, ...options };
+  client.publish(t, m, o);
   console.log(`Published '${message}' to ${topic}`);
 };
