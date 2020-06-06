@@ -91,6 +91,7 @@ export default {
     }),
     new CopyPlugin([
       { from: '_redirects', to: '' },
+      { from: 'src/res/plants', to: 'res/plants' },
     ]),
     new Dotenv(),
   ],

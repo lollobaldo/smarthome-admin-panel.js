@@ -13,7 +13,7 @@ const Screenlock = ({ onUnlock, status, pin }) => {
       onDoubleClick={onUnlock}>
         {status === screenLockStatus.INSERTING_PIN
           ? <ScreenlockPin
-              onUnlock={() => { if (status !== screenLockStatus.INSERTING_PIN) onUnlock(); }}
+              onUnlock={() => { if (black) { onUnlock(); } }}
               correctPin={pin} />
           : null }
     </div>
