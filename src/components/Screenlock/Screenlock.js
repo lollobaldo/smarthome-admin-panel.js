@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Main from '../Main';
+import { screenLockStatus } from 'utils/constants';
 
 import './Screenlock.scss';
 
 const Screenlock = ({ onUnlock, status, pin }) => {
-  const black = status !== Main.screenLockStatus.INSERTING_PIN;
+  const black = status !== screenLockStatus.INSERTING_PIN;
   return (
     <div
       className={`screen-lock--${black ? 'locked' : 'pin'}`}
       onDoubleClick={onUnlock}>
-        {status === Main.screenLockStatus.INSERTING_PIN
+        {status === screenLockStatus.INSERTING_PIN
           ? <ScreenlockPin
               onUnlock={onUnlock}
               correctPin={pin} />
