@@ -25,6 +25,7 @@ import plantDetails from 'src/plantsDetails';
 import './Main.scss';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Login from './Login';
 import Screenlock from './Screenlock';
 // import Footer from './Footer';
 import Home from './Home';
@@ -70,8 +71,12 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(getKeys(defState.mqttState));
     this.state = defState;
+
+    if (document.cookie.split('; ')
+      .find((row) => row.startsWith('auth'))) {
+      this.state = { ...defState, auth: true };
+    }
 
     const callbacks = {
       onConnect: this.onMqttConnect,
@@ -99,6 +104,11 @@ class Main extends React.Component {
       metaThemeColor.setAttribute('content', message);
     }
   }
+
+  auth = () => {
+    this.setState({ auth: true });
+    document.cookie = 'auth=true; expires=Fri, 31 Dec 9999 23:59:59 GMT';
+  };
 
   onPresectSelect = (i) => {
     const { activePreset } = this.state;
@@ -172,6 +182,11 @@ class Main extends React.Component {
           pages={pages}
           lockWithPin={() => this.lockScreen(true)}
           lockWithoutPin={() => this.lockScreen(false)} />
+        { !this.state.auth
+          ? <Login
+              onUnlock={() => this.auth()}
+              pin={this.state.pin} />
+          : null}
         { this.state.screenLocked !== screenLockStatus.UNLOCKED
           ? <Screenlock
               onUnlock={() => this.unlockScreen()}

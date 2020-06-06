@@ -66,6 +66,7 @@ export const presets = [
 ];
 export const defState = {
   presets,
+  auth: false,
   activePreset: -1,
   name: 'Lorenzo',
   pin: 2509,
