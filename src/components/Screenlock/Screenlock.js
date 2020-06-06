@@ -13,7 +13,7 @@ const Screenlock = ({ onUnlock, status, pin }) => {
       onDoubleClick={onUnlock}>
         {status === screenLockStatus.INSERTING_PIN
           ? <ScreenlockPin
-              onUnlock={onUnlock}
+              onUnlock={() => { if (status !== screenLockStatus.INSERTING_PIN) onUnlock(); }}
               correctPin={pin} />
           : null }
     </div>
@@ -38,8 +38,7 @@ const ScreenlockPin = ({ onUnlock, correctPin }) => {
 
   return (
     <div
-      className="screen-lock-pin w3-card-4"
-      onDoubleClick={onUnlock}>
+      className="screen-lock-pin w3-card-4">
         <div className="dots">
           {pin.split('').map((_, i) => (
             <span key={i}>•</span>
