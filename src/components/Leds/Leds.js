@@ -23,24 +23,25 @@ const Leds = ({ handler, state }) => {
     setDimensions({
       width: inputRef.current.offsetWidth,
       height: inputRef.current.offsetHeight,
-      r: Math.min(dimensions.width, dimensions.height) * 0.4,
+      r: Math.min(inputRef.current.offsetWidth, inputRef.current.offsetHeight) * 0.4,
     });
-  }, [inputRef.current]);
+  }, [inputRef]);
   return (
     <div className='colour-wheel-container' ref={inputRef}>
-      <ColourWheel
-        radius={dimensions.r || 200}
-        padding={10}
-        lineWidth={50}
-        onColourSelected={handler}
-        spacers={{
-          colour: '#FFFFFF',
-          // shadowColour: 'grey',
-          // shadowBlur: 5,
-        }}
-        colour={state}
-        colours={colours}
-        animated />
+      {/* Only render if mounted */}
+      { dimensions.r && <ColourWheel
+          radius={dimensions.r}
+          padding={10}
+          lineWidth={50}
+          onColourSelected={handler}
+          spacers={{
+            colour: '#FFFFFF',
+            // shadowColour: 'grey',
+            // shadowBlur: 5,
+          }}
+          colour={state}
+          colours={colours}
+          animated /> }
     </div>
   );
 };
