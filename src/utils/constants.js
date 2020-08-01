@@ -35,6 +35,7 @@ export const pages = [
   {
     path: '/trial',
     icon: null,
+    show: false,
   },
 ];
 
@@ -66,7 +67,7 @@ export const presets = [
 ];
 export const defState = {
   presets,
-  auth: false,
+  auth: true,
   activePreset: -1,
   name: 'Lorenzo',
   pin: 2509,

@@ -22,7 +22,9 @@ const Sidebar = ({ pages, lockWithPin, lockWithoutPin }) => (
     <hr />
     <nav>
       {/* <div> */}
-        {pages.map(({ path, title, icon }) => (
+        {pages
+          .filter(({ show }) => show !== false)
+          .map(({ path, title, icon }) => (
           <p key={path}>
             <Link to={path}>
               <img
@@ -32,8 +34,7 @@ const Sidebar = ({ pages, lockWithPin, lockWithoutPin }) => (
               {title || path2title(path)}
             </Link>
           </p>
-        ))}
-      {/* </div> */}
+          ))}
       <hr />
       <div className="bottom-links">
         <p onClick={lockWithPin}>

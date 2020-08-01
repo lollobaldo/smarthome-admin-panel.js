@@ -62,7 +62,7 @@ class ColourWheel extends React.Component {
   constructor(props) {
     super();
 
-    console.log('Constructor');
+    // // console.log('Constructor');
     // Initialised once the DOM has loaded.
     this.canvasEl = null;
     this.ctx = null;
@@ -90,7 +90,7 @@ class ColourWheel extends React.Component {
 
   // MARK - Common:
   getRelativeMousePos = (clientX, clientY) => {
-    console.log('getRelMousePos');
+    // console.log('getRelMousePos');
     const { radius } = this.props;
 
     const canvasPos = this.canvasEl.getBoundingClientRect();
@@ -118,7 +118,7 @@ class ColourWheel extends React.Component {
   }
 
   initCanvas = () => {
-    console.log('initCanvas');
+    // console.log('initCanvas');
 
     const { radius } = this.props;
 
@@ -132,13 +132,13 @@ class ColourWheel extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log('compDidMount');
+    // console.log('compDidMount');
     // Initialising our canvas & context objs.
     this.canvasEl = document.getElementById('colour-picker');
     this.ctx = this.canvasEl.getContext('2d');
 
-    console.log(this.canvasEl);
-    console.log(this.ctx);
+    // console.log(this.canvasEl);
+    // console.log(this.ctx);
 
     this.drawOuterWheel();
     if (this.props.colour) {
@@ -152,7 +152,7 @@ class ColourWheel extends React.Component {
   }
 
   onCanvasClick = ({ clientX, clientY }) => {
-    console.log('onCanvasClick');
+    // console.log('onCanvasClick');
     const evt = this.getRelativeMousePos(clientX, clientY);
     // Cases for click-events:
     if (this.outerWheelBounds.inside(evt.fromCenter)) {
@@ -164,7 +164,7 @@ class ColourWheel extends React.Component {
 
   // MARK - Clicks & action methods:
   outerWheelClicked = (evtPos) => {
-    console.log('outWheelClick');
+    // console.log('outWheelClick');
     // returns an rgba array of the pixel-clicked.
     const rgbaArr = this.ctx.getImageData(evtPos.x, evtPos.y, 1, 1).data;
     const [r, g, b] = rgbaArr;
@@ -180,7 +180,7 @@ class ColourWheel extends React.Component {
   }
 
   innerWheelClicked = (evtPos) => {
-    console.log('innWheelClick');
+    // console.log('innWheelClick');
 
     const rgbaArr = this.ctx.getImageData(evtPos.x, evtPos.y, 1, 1).data;
     const [r, g, b] = rgbaArr;
@@ -194,7 +194,7 @@ class ColourWheel extends React.Component {
 
   // MARK - Drawing:
   drawOuterWheel = () => {
-    console.log('drawOutWheel');
+    // console.log('drawOutWheel');
     // TODO: Draw outline; separate method.
     const { radius, colours, lineWidth } = this.props;
     const height = radius * 2;
@@ -225,7 +225,7 @@ class ColourWheel extends React.Component {
   }
 
   drawSpacers = () => {
-    console.log('drawSpacers');
+    // console.log('drawSpacers');
 
     if (this.props.spacers) {
       this.drawSpacer(this.firstSpacerRadius);
@@ -257,7 +257,7 @@ class ColourWheel extends React.Component {
   }
 
   drawInnerWheel = (animationPercentage = 0) => {
-    console.log('drawInnerWheel');
+    // console.log('drawInnerWheel');
 
     // raf setup.
     const requestAnimationFrame = window.requestAnimationFrame
@@ -266,9 +266,9 @@ class ColourWheel extends React.Component {
       || window.msRequestAnimationFrame;
     window.requestAnimationFrame = requestAnimationFrame;
 
-    console.log(this.props.colour);
+    // console.log(this.props.colour);
     const { r, g, b } = colourToRgbObj(this.props.colour);
-    console.log({ r, g, b });
+    // console.log({ r, g, b });
     const {
       radius, lineWidth, shades, animated,
     } = this.props;
@@ -285,7 +285,7 @@ class ColourWheel extends React.Component {
     this.drawSpacers();
 
     const rgbShades = produceRgbShades(r, g, b, shades);
-    console.log(rgbShades);
+    // console.log(rgbShades);
 
     // Different functions for drawing our inner-wheel of shades.
     const drawShades = () => {
@@ -340,7 +340,7 @@ class ColourWheel extends React.Component {
   }
 
   drawCenterCircle() {
-    console.log('drawCenterCircle');
+    // console.log('drawCenterCircle');
 
     const rgb = colourToRgbObj(this.props.colour);
     const { radius } = this.props;
@@ -360,10 +360,10 @@ class ColourWheel extends React.Component {
   }
 
   componentDidUpdate = () => {
-    console.log('compDidUpdate');
+    // console.log('compDidUpdate');
 
     this.drawOuterWheel();
-    console.log(this.props.colour);
+    // console.log(this.props.colour);
     if (this.props.colour) {
       this.drawInnerWheel();
       this.drawCenterCircle();
@@ -372,7 +372,7 @@ class ColourWheel extends React.Component {
   }
 
   render = () => {
-    console.log('render');
+    // console.log('render');
 
     const { radius } = this.props;
     return (

@@ -173,7 +173,7 @@ class Main extends React.Component {
     const { lights, plants } = this.state.mqttState;
     return (
       // Need to wrap components
-      <div>
+      <div id="content">
         <Header
           onLock={() => this.lockScreen(false)}
           name={name}

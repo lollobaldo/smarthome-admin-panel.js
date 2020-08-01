@@ -1,6 +1,52 @@
+import { useState, useEffect } from 'react';
 import dottie from 'dottie';
 
 import { pages } from './constants';
+
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  return { width, height };
+};
+
+export const useWindowDimensions = () => {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowDimensions;
+};
+
+export const useComponentDimensions = (myRef) => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleResize = () => {
+    setWidth(myRef.current.offsetWidth);
+    setHeight(myRef.current.offsetHeight);
+  };
+
+  console.log(myRef);
+  console.log(myRef.current);
+
+  useEffect(() => {
+    if (myRef.current) {
+      myRef.current.addEventListener('resize', handleResize);
+    }
+    return () => {
+      myRef.current.removeEventListener('resize', handleResize);
+    };
+  }, [myRef]);
+
+  return { width, height };
+};
+
 
 // Hacky way to toTitleCase (from SO)
 export const toTitleCase = (str) => (
