@@ -107,6 +107,12 @@ export const rgbToHex = (rgb) => {
   return `#${red}${green}${blue}`;
 };
 
+export const fullHex = (c) => {
+  if (c.length === 4) {
+    return `#${c.substr(1).split().map((v) => v + v)}`;
+  }
+  return c;
+};
 
 // return object with nested children
 export const assignWithPath = (obj, path, value) => {

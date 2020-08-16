@@ -21,6 +21,7 @@ import {
 import { faUserCircle, faHeart as fasHeart, faLightbulb as fasLightBulb } from '@fortawesome/free-regular-svg-icons';
 
 import plantDetails from 'src/plantsDetails';
+import ledsEffects from 'src/ledsEffects';
 
 import './Main.scss';
 import Header from './Header';
@@ -44,6 +45,7 @@ import {
   getKeys,
   assignWithPath,
   parseMqttMessage,
+  fullHex,
   rgbToHex,
 } from '../utils';
 import { startMqtt, safePublish } from '../utils/mqtt';
@@ -149,15 +151,22 @@ class Main extends React.Component {
   }
 
   onLedsChange = (colour) => {
-    const hex = rgbToHex(colour);
-    this.setState(
-      assignWithPath(
-        this.state.mqttState,
-        'light/leds',
-        hex,
-      ),
-    );
-    safePublish('lights/leds', hex);
+    console.log(colour);
+    if (!Array.isArray(colour)) {
+      console.log('init');
+      const hex = rgbToHex(colour);
+      this.setState(
+        assignWithPath(
+          this.state.mqttState,
+          'light/leds',
+          hex,
+        ),
+      );
+      safePublish('lights/leds', hex);
+    } else {
+      const fullColors = colour.map(fullHex);
+      safePublish('lights/leds', `%${fullColors.join()}`);
+    }
   }
 
   onRemote = (code) => {
@@ -207,7 +216,8 @@ class Main extends React.Component {
         <Route path="/leds">
           <Leds
             handler={this.onLedsChange}
-            state={lights.leds} />
+            state={lights.leds}
+            effects={ledsEffects} />
         </Route>
         <Route path="/plants">
           <Plants
