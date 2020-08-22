@@ -1,80 +1,137 @@
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSpring, animated } from 'react-spring';
+import tinycolor from 'tinycolor2';
 
 import './ColorWheel.scss';
 
-const ColorWheel = () => (
-  <div>
-    <svg
-      xmlnsDc="http://purl.org/dc/elements/1.1/"
-      xmlnsCc="http://creativecommons.org/ns#"
-      xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-      xmlnsSvg="http://www.w3.org/2000/svg"
-      xmlns="http://www.w3.org/2000/svg"
-      version="1.1"
-      viewBox="0 0 540 540"
-      width="540"
-      height="540"
-      id="svg2">
-      <defs
-        id="defs4" />
-      <path
-        d="m 511.48146,205.29524 c 11.90567,44.43259 11.90567,84.97693 0,129.40952 L 487.31476,349.3424 270,270 490.20449,192.09986 z"
-        id="path16"
-        style={{ fill: '#fefe33' }} />
-      <path
-        d="m 334.70476,28.518543 c 44.43259,11.905676 79.54502,32.17785 112.07193,64.704761 L 447.40047,118.09589 270,270 313.06484,40.508134 z"
-        id="path20"
-        style={{ fill: '#fb9902' }} />
-      <path
-        d="m 446.77669,93.223304 c 32.52692,32.526916 52.79909,67.639346 64.70477,112.071936 L 270,270 z"
-        id="path18"
-        style={{ fill: '#fabc02' }} />
-      <path
-        d="M 93.223305,93.223305 C 125.75022,60.696393 160.86265,40.42422 205.29524,28.518543 L 231.20546,44.501656 270,270 92.739568,120.0571 z"
-        id="path28"
-        style={{ fill: '#fe2712' }} />
-      <path
-        d="m 205.29524,28.518543 c 44.43259,-11.905676 84.97693,-11.905676 129.40952,0 L 270,270 z"
-        id="path22"
-        style={{ fill: '#fd5308' }} />
-      <path
-        d="m 28.518543,334.70476 c -11.905676,-44.43259 -11.905676,-84.97693 0,-129.40952 L 56.311276,186.62718 270,270 55.854788,349.40527 z"
-        id="path26"
-        style={{ fill: '#8601af' }} />
-      <path
-        d="M 28.518543,205.29524 C 40.424219,160.86265 60.696393,125.75022 93.223305,93.223305 L 270,270 z"
-        id="path30"
-        style={{ fill: '#a7194b' }} />
-      <path
-        d="M 205.29524,511.48146 C 160.86265,499.57578 125.75022,479.30361 93.223305,446.7767 L 95.307837,418.58874 270,270 231.0453,499.70648 z"
-        id="path8"
-        style={{ fill: '#0247fe' }} />
-      <path
-        d="M 93.223305,446.7767 C 60.696393,414.24978 40.42422,379.13735 28.518543,334.70476 L 270,270 z"
-        id="path24"
-        style={{ fill: '#3d01a4' }} />
-      <path
-        d="m 446.7767,446.7767 c -32.52692,32.52691 -67.63935,52.79908 -112.07194,64.70476 L 310.45335,496.38826 270,270 446.04632,421.15701 z"
-        id="path12"
-        style={{ fill: '#66b032' }} />
-      <path
-        d="m 334.70476,511.48146 c -44.43259,11.90567 -84.97693,11.90567 -129.40952,0 L 270,270 z"
-        id="path10"
-        style={{ fill: '#0391ce' }} />
-      <path
-        d="M 511.48146,334.70476 C 499.57578,379.13735 479.30361,414.24978 446.7767,446.7767 L 270,270 511.48146,334.70476 z"
-        id="path14"
-        style={{ fill: '#d0ea2b' }} />
-      <circle
-        cx="270"
-        cy="270"
-        r="153.79581"
-        id="circle32"
-        style={{ fill: '#ffffff' }} />
+const ColorWheel = ({ state: selectedColor, handler }) => {
+  const colors = [
+    '#FFFFFF',
+    '#F8E300',
+    '#FF6400',
+    '#E20000',
+    '#AC000D',
+    '#9E005F',
+    '#6D0E82',
+    '#3B3887',
+    '#175FDA',
+    '#0091E2',
+    '#00BCED',
+    '#14E4C5',
+    '#00C3A9',
+    '#00B720',
+    '#008813',
+    '#000000',
+  ];
+  const width = 500;
+  const height = width;
+  const outerCircleSize = width / 6;
+  const middleCircleSize = width / 8;
+  const innerCircleSize = width / 8;
+  const padding = width / 36;
+  const R = innerCircleSize;
+  const rr = innerCircleSize + padding;
+  const RR = rr + middleCircleSize;
+  const rrr = RR + padding;
+  const RRR = rrr + outerCircleSize;
+  const n = colors.length;
+  const a = -(2 * Math.PI) / n;
+  const { kSpring: kOuterSpring } = useSpring({ kSpring: 1, from: { kSpring: 0 } });
+  const { kSpring: kMidddleSpring } = useSpring({ kSpring: 1, from: { kSpring: 0 } });
+  const [color, setColor] = useState(selectedColor);
+
+  const changeColor = (newColor) => {
+    // kMidddleSpring.reset();
+    setColor(newColor);
+    handler(newColor);
+  };
+
+  const getShades = (hex) => {
+    const shades = [];
+    const hsl = tinycolor(hex).toHsl();
+    const k = 0.8 / n;
+    for (let i = 0.9; i >= 0.1; i -= k) {
+      hsl.l = i;
+      shades.push(tinycolor(hsl).toHexString());
+    }
+    return shades;
+  };
+
+  const InnerCircle = () => (
+    <circle
+      cx={width / 2} cy={height / 2} r={R}
+      fill={color} />);
+
+  const MiddleRing = () => {
+    useEffect(
+      () => {
+        kMidddleSpring.reset();
+      }, [color],
+    );
+    return (
+      <Ring
+        cx={width / 2} cy={height / 2}
+        R={RR} r={rr} colors={getShades(color)}
+        kSpring={kMidddleSpring} onColorSelect={changeColor} />
+    );
+  };
+
+  const OuterRing = () => (
+    <Ring
+      cx={width / 2} cy={height / 2}
+      R={RRR} r={rrr} colors={colors}
+      kSpring={kOuterSpring} onColorSelect={changeColor} />);
+
+  return (
+    <svg key={color}
+      width={width}
+      height={height}>
+      {color && <InnerCircle />}
+      {color && <MiddleRing />}
+      <OuterRing />
     </svg>
-  </div>
+  );
+};
+
+const Ring = ({
+  cx, cy, R, r, colors, kSpring, onColorSelect,
+}) => (
+  colors.map((c, i) => (
+    <animated.path
+      key={c}
+      style={{ fill: c }}
+      onClick={() => onColorSelect(c)}
+      d={kSpring.interpolate((k) => {
+        const n = colors.length;
+        const a = -(2 * Math.PI) / n;
+        const alpha = k * a * i - Math.PI;
+        const alphap = k * a * (i + 1) - Math.PI;
+        return (`
+        M ${(cx) - R * (Math.sin(alpha))},
+          ${(cy) - R * (Math.cos(alpha))}
+        A ${R}, ${R}, 0, 0, 1,
+          ${(cx) - R * (Math.sin(alphap))}
+          ${(cy) - R * (Math.cos(alphap))}
+        L ${(cx) - r * (Math.sin(alphap))},
+          ${(cy) - r * (Math.cos(alphap))}
+        A ${r}, ${r}, 0, 0, 0,
+          ${(cx) - r * (Math.sin(alpha))}
+          ${(cy) - r * (Math.cos(alpha))}
+        z
+        `);
+      })} />
+  ))
 );
+
+Ring.propTypes = PropTypes.shape({
+  cx: PropTypes.number.isRequired,
+  cy: PropTypes.number.isRequired,
+  r: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
+  kSpring: PropTypes.any,
+  onColorSelect: PropTypes.func.isRequired,
+}).isRequired;
 
 ColorWheel.propTypes = PropTypes.shape({
 }).isRequired;

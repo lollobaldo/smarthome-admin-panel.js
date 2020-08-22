@@ -42,7 +42,7 @@ export const pages = [
 
 export const screenLockStatus = {
   UNLOCKED: 1,
-  BLACK: 2,
+  LOCKED: 2,
   PIN_LOCKED: 3,
   INSERTING_PIN: 4,
 };

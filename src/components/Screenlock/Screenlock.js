@@ -1,44 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { screenLockStatus } from 'utils/constants';
 
 import './Screenlock.scss';
 
-const Screenlock = ({ onUnlock, status, pin }) => {
+const Screenlock = ({
+  onLock, onUnlock, status, pin,
+}) => {
   const black = status !== screenLockStatus.INSERTING_PIN;
+  const pinNeeded = status === screenLockStatus.INSERTING_PIN;
+
+  let screenlockTimeoutID = useRef(null);
+  let locked = useRef(true);
+
+  const resetLockTimer = () => {
+    clearTimeout(screenlockTimeoutID);
+    if (locked) {
+      screenlockTimeoutID = setTimeout(() => onLock(), 5000);
+    }
+  };
+
+  if (pinNeeded) {
+    resetLockTimer();
+  }
+
   return (
     <div
       className={`screen-lock--${black ? 'locked' : 'pin'}`}
-      onDoubleClick={onUnlock}>
-        {status === screenLockStatus.INSERTING_PIN
+      onDoubleClick={() => (black && onUnlock())}>
+        {pinNeeded
           ? <ScreenlockPin
-              onUnlock={() => { if (black) { onUnlock(); } }}
+              onClick={resetLockTimer}
+              onUnlock={() => {
+                locked = false;
+                onUnlock();
+              }}
               correctPin={pin} />
           : null }
     </div>
   );
 };
 
-const ScreenlockPin = ({ onUnlock, correctPin }) => {
+const ScreenlockPin = ({ onClick, onUnlock, correctPin }) => {
   const [pin, setPin] = useState('');
 
   const pinPressed = (v) => {
-    console.log(`Pressed key ${v}`);
-    console.log(pin.split(''));
     if (v === 'c') {
       setPin(pin.slice(0, -1));
     } else {
       setPin(pin + v);
-    }
-    if (pin + v === correctPin.toString()) {
-      onUnlock();
+      if (pin + v === correctPin.toString()) {
+        onUnlock();
+      }
     }
   };
 
   return (
     <div
-      className="screen-lock-pin w3-card-4">
+      className="screen-lock-pin w3-card-4"
+      onClick={onClick}>
         <div className="dots">
           {pin.split('').map((_, i) => (
             <span key={i}>•</span>

@@ -35,6 +35,19 @@
     background: #777;
     border-radius: 10px;
   }
+
+  & input[type="range"] {
+    margin: 10px 20%;
+    flex-basis: 100%;
+
+    &::-webkit-slider-runnable-track {
+    }
+    &::-webkit-slider-thumb {
+      background: #fff;
+      border-radius: 50%;
+    }
+  }
+
 }
 
 .effect {

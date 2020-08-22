@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, withRouter } from 'react-router-dom';
+import tinycolor from 'tinycolor2';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -117,12 +118,12 @@ class Main extends React.Component {
     this.setState({ activePreset: i === activePreset ? -1 : i });
   }
 
-  lockScreen = (pinRequired) => {
+  lockScreen = (pinRequired = true) => {
     console.log('Locking screen');
     this.setState({
       screenLocked:
-        pinRequired ? screenLockStatus.INSERTING_PIN
-          : screenLockStatus.BLACK,
+        pinRequired ? screenLockStatus.PIN_LOCKED
+          : screenLockStatus.LOCKED,
     });
     if (window.AndroidWrapper) {
       window.AndroidWrapper.turnOffLCD();
@@ -131,9 +132,13 @@ class Main extends React.Component {
 
   unlockScreen = () => {
     console.log('Unlocking screen');
-    this.setState({ screenLocked: screenLockStatus.UNLOCKED });
     if (window.AndroidWrapper) {
       window.AndroidWrapper.turnOnLCD();
+    }
+    if (this.state.screenLocked === screenLockStatus.PIN_LOCKED) {
+      this.setState({ screenLocked: screenLockStatus.INSERTING_PIN });
+    } else {
+      this.setState({ screenLocked: screenLockStatus.UNLOCKED });
     }
   }
 
@@ -154,7 +159,7 @@ class Main extends React.Component {
     console.log(colour);
     if (!Array.isArray(colour)) {
       console.log('init');
-      const hex = rgbToHex(colour);
+      const hex = tinycolor(colour).toHexString();
       this.setState(
         assignWithPath(
           this.state.mqttState,
@@ -193,12 +198,13 @@ class Main extends React.Component {
           lockWithoutPin={() => this.lockScreen(false)} />
         { !this.state.auth
           ? <Login
-              onUnlock={() => this.auth()}
+              onUnlock={this.auth}
               pin={this.state.pin} />
           : null}
         { this.state.screenLocked !== screenLockStatus.UNLOCKED
           ? <Screenlock
-              onUnlock={() => this.unlockScreen()}
+              onLock={this.lockScreen}
+              onUnlock={this.unlockScreen}
               pin={this.state.pin}
               status={this.state.screenLocked} />
           : null}
