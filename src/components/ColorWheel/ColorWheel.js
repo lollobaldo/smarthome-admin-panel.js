@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from 'react-spring';
 import tinycolor from 'tinycolor2';
@@ -35,8 +35,6 @@ const ColorWheel = ({ state: selectedColor, handler }) => {
   const RR = rr + middleCircleSize;
   const rrr = RR + padding;
   const RRR = rrr + outerCircleSize;
-  const n = colors.length;
-  const a = -(2 * Math.PI) / n;
   const { kSpring: kOuterSpring } = useSpring({ kSpring: 1, from: { kSpring: 0 } });
   const { kSpring: kMidddleSpring } = useSpring({ kSpring: 1, from: { kSpring: 0 } });
   const [color, setColor] = useState(selectedColor);
@@ -50,7 +48,7 @@ const ColorWheel = ({ state: selectedColor, handler }) => {
   const getShades = (hex) => {
     const shades = [];
     const hsl = tinycolor(hex).toHsl();
-    const k = 0.8 / n;
+    const k = 0.8 / colors.length;
     for (let i = 0.9; i >= 0.1; i -= k) {
       hsl.l = i;
       shades.push(tinycolor(hsl).toHexString());
