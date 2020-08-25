@@ -25,6 +25,7 @@ import plantDetails from 'src/plantsDetails';
 import ledsEffects from 'src/ledsEffects';
 
 import './Main.scss';
+import './w3css.css';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Login from './Login';
@@ -47,7 +48,6 @@ import {
   assignWithPath,
   parseMqttMessage,
   fullHex,
-  rgbToHex,
 } from '../utils';
 import { startMqtt, safePublish } from '../utils/mqtt';
 
@@ -148,7 +148,7 @@ class Main extends React.Component {
     this.setState(
       assignWithPath(
         this.state.mqttState,
-        'light/floorlamp',
+        'lights/floorlamp',
         newState,
       ),
     );
@@ -157,21 +157,23 @@ class Main extends React.Component {
 
   onLedsChange = (colour) => {
     console.log(colour);
+    let state;
+    let command;
     if (!Array.isArray(colour)) {
-      console.log('init');
-      const hex = tinycolor(colour).toHexString();
-      this.setState(
-        assignWithPath(
-          this.state.mqttState,
-          'light/leds',
-          hex,
-        ),
-      );
-      safePublish('lights/leds', hex);
+      state = tinycolor(colour).toHexString();
+      command = state;
     } else {
-      const fullColors = colour.map(fullHex);
-      safePublish('lights/leds', `%${fullColors.join()}`);
+      state = colour;
+      command = `%${colour.map(fullHex).join()}`;
     }
+    this.setState(
+      assignWithPath(
+        this.state.mqttState,
+        'lights/leds',
+        state,
+      ),
+    );
+    safePublish('lights/leds', command);
   }
 
   onRemote = (code) => {

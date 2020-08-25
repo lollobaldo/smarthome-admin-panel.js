@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useSpring, animated, config } from 'react-spring';
@@ -7,15 +7,6 @@ import { useDrag } from 'react-use-gesture';
 import ColorWheel from '../ColorWheel';
 
 import './Leds.scss';
-
-const colours = [
-  '#00C3A9', '#00B720', '#008813',
-  '#000000', '#FFFFFF',
-  '#F8E300', '#FF6400', '#E20000',
-  '#AC000D', '#9E005F', '#6D0E82',
-  '#3B3887', '#175FDA', '#0091E2',
-  '#00BCED', '#14E4C5',
-];
 
 const colors2css = (colors, jump) => {
   let cs;

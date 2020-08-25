@@ -37,6 +37,7 @@ const ColorWheel = ({ state: selectedColor, handler }) => {
   const RRR = rrr + outerCircleSize;
   const { kSpring: kOuterSpring } = useSpring({ kSpring: 1, from: { kSpring: 0 } });
   const { kSpring: kMidddleSpring } = useSpring({ kSpring: 1, from: { kSpring: 0 } });
+  console.log(selectedColor);
   const [color, setColor] = useState(selectedColor);
 
   const changeColor = (newColor) => {
@@ -55,6 +56,22 @@ const ColorWheel = ({ state: selectedColor, handler }) => {
     }
     return shades;
   };
+
+  const EffectCircle = () => (
+    <><defs>
+      <linearGradient id="effectGradient">
+        {
+          selectedColor.map((c, i) => (
+            <stop key={c} stopColor={c}
+              offset={`${(100 / (selectedColor.length - 1)) * i}%`} />
+          ))
+        }
+      </linearGradient>
+    </defs>
+    <circle
+      cx={width / 2} cy={height / 2} r={RR}
+      fill="url(#effectGradient)" /></>
+  );
 
   const InnerCircle = () => (
     <circle
@@ -81,13 +98,16 @@ const ColorWheel = ({ state: selectedColor, handler }) => {
       R={RRR} r={rrr} colors={colors}
       kSpring={kOuterSpring} onColorSelect={changeColor} />);
 
+  console.log(color);
   return (
     <svg key={color}
       width={width}
       height={height}>
-      {color && <InnerCircle />}
-      {color && <MiddleRing />}
       <OuterRing />
+      {!Array.isArray(selectedColor)
+        ? color && <><InnerCircle /><MiddleRing /></>
+        : <EffectCircle />
+      }
     </svg>
   );
 };
