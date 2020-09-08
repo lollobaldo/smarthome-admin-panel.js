@@ -6,7 +6,9 @@ import './Home.scss';
 import Presets from './Presets';
 import Devices from './Devices';
 
-const Home = ({ presets, activePreset, onPresectSelect }) => (
+const Home = ({
+  presets, activePreset, onPresectSelect, state,
+}) => (
   <div className="body">
     <h3>Presets</h3>
     <Presets
@@ -14,7 +16,7 @@ const Home = ({ presets, activePreset, onPresectSelect }) => (
       activePreset={activePreset}
       onPresectSelect={onPresectSelect} />
     <h3>Settings</h3>
-    <Devices />
+    <Devices state={state} />
   </div>
 );
 
@@ -22,6 +24,7 @@ Home.propTypes = {
   presets: PropTypes.array,
   activePreset: PropTypes.number.isRequired,
   onPresectSelect: PropTypes.func.isRequired,
+  state: PropTypes.any,
 };
 
 export default Home;

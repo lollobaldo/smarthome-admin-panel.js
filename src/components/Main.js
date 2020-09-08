@@ -215,7 +215,8 @@ class Main extends React.Component {
           <Home
             onPresectSelect={(i) => this.onPresectSelect(i)}
             presets={presets}
-            activePreset={activePreset} />
+            activePreset={activePreset}
+            state={this.state.mqttState} />
         </Route>
         <Route path="/lights">
           <Lights

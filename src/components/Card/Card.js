@@ -5,16 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Card.scss';
 
 const Card = ({
-  onClick, name, icon, color, value,
+  onClick, name, icon, value,
 }) => (
   <div className="w3-card card" onClick={onClick}>
-    <FontAwesomeIcon
-      icon={icon}
-      size="2x"
-      color={color}
+    <img
+      src={icon}
       className="card-icon" />
-    <h4>{name}</h4>
-    <p>{value}</p>
+    <h4><span>{name}: </span><span className="value">{value}</span></h4>
+    {/* <p>{value}</p> */}
   </div>
 );
 
@@ -38,7 +36,7 @@ Card.propTypes = {
   onClick: PropTypes.func,
   icon: PropTypes.any.isRequired,
   color: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 CardIcon.propTypes = {

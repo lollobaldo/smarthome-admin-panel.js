@@ -1,4 +1,7 @@
 .card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 16px 8px;
   width: 100px;
   // width: 100px;
@@ -13,7 +16,8 @@
   }
 
   & .card-icon {
-    // color: yellow;
+    width: 50px;
+    flex-basis: 80%;
   }
 
   & .cardicon-icon {
@@ -23,8 +27,16 @@
   }
 
   & h4 {
+    width: 100%;
     margin: 0;
     font-size: 1em;
+    display: flex;
+    justify-content: space-between;
+
+    span.value {
+      margin: 0;
+      color: #888;
+    }
   }
 
   & p{

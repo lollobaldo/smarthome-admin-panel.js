@@ -4,60 +4,50 @@ import { withRouter } from 'react-router';
 
 import Cards from 'components/Card';
 
-import constants from 'utils/_constants.scss';
+import iconLight from 'res/icons/light.svg';
+import iconLeds from 'res/icons/light-rgb.svg';
+import iconFan from 'res/icons/fan.svg';
+import iconPlant from 'res/icons/plant-potted.svg';
+import iconThermometer from 'res/icons/thermometer.svg';
+
 
 import './Devices.scss';
 
 const { Card } = Cards;
-const {
-  yellow, orange, green, blue,
-} = constants;
 
-// const Devices = ({ history }) => (
-//   <div className="flex settings">
-//     <Card name="Lights"
-//       icon="lightbulb" color={orange}
-//       value="ON"
-//       onClick={() => history.push('/lights')} />
-//     <Card name="LEDs" icon="tree" color={red} value="Green"/>
-//     <Card name="Fans" icon="fan" color={blue} value="OFF"/>
-//     <Card name="Temp" icon="thermometer-half" color={yellow} value="86%"/>
-//     <Card name="Humidity" icon="tint" color={blue} value="86%"/>
-//     <Card name="Plants" icon="seedling" color={green} value="86%"/>
-//   </div>
-// );
+const getLedsDot = (color) => (
+  <span style={{
+    height: '1.3em',
+    width: '1.3em',
+    backgroundColor: `${color}`,
+    borderRadius: '50%',
+    display: 'inline-block',
+  }}></span>
+);
 
-class Devices extends React.Component {
-  goToCarddetails = (cardId) => {
-    localStorage.setItem('selectedCard', cardId);
-    this.props.history.push('/card-details');
-  }
-
-  render() {
-    return (
-      <div className="flex settings">
-        <Card name="Lights"
-          icon="lightbulb" color={orange}
-          value="ON"
-          onClick={() => this.props.history.push('/lights')} />
-        <Card name="Leds"
-          icon="lightbulb" color={orange}
-          value=""
-          onClick={() => this.props.history.push('/leds')} />
-        <Card name="Plants"
-          icon="seedling" color={green}
-          value=""
-          onClick={() => this.props.history.push('/plants')} />
-        <Card name="Fans" icon="fan" color={blue} value="OFF"/>
-        <Card name="Temp" icon="thermometer-half" color={yellow} value="86%"/>
-        <Card name="Humidity" icon="tint" color={blue} value="86%"/>
-      </div>
-    );
-  }
-}
+const Devices = ({ state }) => (
+  <div className="flex settings">
+    <Card name="Light"
+      icon={iconLight}
+      value={state.lights.floorLamp ? 'ON' : 'OFF'}
+      onClick={() => this.props.history.push('/lights')} />
+    <Card name="Leds"
+      icon={iconLeds}
+      value={getLedsDot(state.lights.leds)}
+      onClick={() => this.props.history.push('/leds')} />
+    <Card name="Plants"
+      icon={iconPlant}
+      value=""
+      onClick={() => this.props.history.push('/plants')} />
+    <Card name="Fans" icon={iconFan} value="OFF"/>
+    <Card name="Temp" icon={iconThermometer} value="86%"/>
+    <Card name="Humidity" icon={iconThermometer} value="86%"/>
+  </div>
+);
 
 Devices.propTypes = {
   history: PropTypes.any,
+  state: PropTypes.any,
 };
 
 export default withRouter(Devices);
