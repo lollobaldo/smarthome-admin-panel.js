@@ -17,28 +17,28 @@ const { Card } = Cards;
 
 const getLedsDot = (color) => (
   <span style={{
-    height: '1.3em',
-    width: '1.3em',
+    height: '1.4em',
+    width: '1.4em',
     backgroundColor: `${color}`,
     borderRadius: '50%',
     display: 'inline-block',
   }}></span>
 );
 
-const Devices = ({ state }) => (
+const Devices = ({ history, state }) => (
   <div className="flex settings">
     <Card name="Light"
       icon={iconLight}
       value={state.lights.floorLamp ? 'ON' : 'OFF'}
-      onClick={() => this.props.history.push('/lights')} />
+      onClick={() => history.push('/lights')} />
     <Card name="Leds"
       icon={iconLeds}
       value={getLedsDot(state.lights.leds)}
-      onClick={() => this.props.history.push('/leds')} />
+      onClick={() => history.push('/leds')} />
     <Card name="Plants"
       icon={iconPlant}
       value=""
-      onClick={() => this.props.history.push('/plants')} />
+      onClick={() => history.push('/plants')} />
     <Card name="Fans" icon={iconFan} value="OFF"/>
     <Card name="Temp" icon={iconThermometer} value="86%"/>
     <Card name="Humidity" icon={iconThermometer} value="86%"/>

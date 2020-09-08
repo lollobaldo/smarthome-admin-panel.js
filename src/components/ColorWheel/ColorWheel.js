@@ -101,8 +101,9 @@ const ColorWheel = ({ state: selectedColor, handler }) => {
   console.log(color);
   return (
     <svg key={color}
-      width={width}
-      height={height}>
+      width="100%"
+      height="100%"
+      viewBox={`0 0 ${width} ${height}`}>
       <OuterRing />
       {!Array.isArray(selectedColor)
         ? color && <><InnerCircle /><MiddleRing /></>
