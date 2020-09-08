@@ -47,6 +47,12 @@ export const screenLockStatus = {
   INSERTING_PIN: 4,
 };
 
+export const serviceStatus = {
+  OK: 1,
+  WARNING: 2,
+  ERROR: 3,
+};
+
 export const presets = [
   {
     name: 'Romantic',

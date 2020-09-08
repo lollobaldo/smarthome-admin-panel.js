@@ -1,0 +1,23 @@
+.statusbar {
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px !important;
+  background: white;
+
+  img {
+    width: 50px;
+  }
+
+  hr {
+    border-top: 1px solid #999;
+    width: stretch;
+  }
+}
+
+@media only screen and (orientation: portrait) {
+  .statusbar {
+    display: none;
+  }
+}

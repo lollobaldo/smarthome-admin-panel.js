@@ -28,6 +28,7 @@ import './Main.scss';
 import './w3css.css';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Statusbar from './Statusbar';
 import Login from './Login';
 import Screenlock from './Screenlock';
 // import Footer from './Footer';
@@ -235,6 +236,7 @@ class Main extends React.Component {
         <Route path="/trial">
           <ColorWheel />
         </Route>
+        <Statusbar />
       </div>
     );
   }
