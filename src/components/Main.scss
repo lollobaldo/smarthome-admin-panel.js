@@ -1,9 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700&display=swap');
-* {
-  box-sizing: border-box;
-  // font-family: 'Open Sans', sans-serif;
-  font-family: 'Montserrat', sans-serif;
-}
 
 html, body, #app, #content {
   height: 100%;
@@ -13,17 +8,6 @@ html, body, #app, #content {
   overscroll-behavior-y: contain;
 }
 
-body {
-  // overscroll-behavior: contain;
-  margin: 0;
-  background: #F5F5F5;
-  overflow: hidden;
-}
-
-a {
-  text-decoration: none;
-}
-
 @media only screen and (orientation: landscape) {
   #app, #app > div {
     flex-direction: row;
@@ -31,10 +15,6 @@ a {
 }
 
 @media only screen and (min-width: 1050px) {
-  body {
-    background: #F5F5F5;
-  }
-
   /* The device with borders */
   #app {
     box-sizing: content-box;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useSpring, animated, config } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 
-import ColorWheel from '../ColorWheel';
+import ColorWheel from 'components/bits/ColorWheel1';
 
 import './Leds.scss';
 

@@ -1,17 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import posed, { PoseGroup } from "react-pose";
+import styled from 'styled-components';
+import theme from 'styled-theming';
 
 import { path2title } from 'src/utils';
 
-import './Header.scss';
+import { card } from 'utils/themes';
 
-import profilePic from '../../res/pp.jpg';
-import arrowLeft from '../../res/icons/icons8-left-50.png';
+// import profilePic from 'res/pp.jpg';
+import arrowLeft from 'res/icons/icons8-left-50.png';
+import day from 'res/icons/day.svg';
+import night from 'res/icons/night.svg';
 
-const Header = ({ page, onLock }) => (
-  <header className="header w3-container w3-xlarge w3-padding-16 w3-card">
+const StyledHeader = styled.header`
+  ${theme('mode', card)}
+  z-index: 10;
+  height: 70px;
+
+  @media only screen and (orientation: landscape) {
+    display: none;
+  }
+
+  & p {
+    margin: 0;
+  }
+
+  & .icon-back {
+    height: 1.5em;
+    margin-right: 16px;
+  }
+
+  & span {
+    vertical-align: middle;
+  }
+`;
+
+const NightModeButton = styled.button`
+  float: right;
+  width: 1.5em;
+  border: 0;
+  padding: 0;
+  background: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+
+const themeIcons = { light: day, dark: night };
+
+const Header = ({ page, selectedTheme, changeTheme }) => (
+  <StyledHeader className="w3-container w3-xlarge w3-padding-16 w3-card">
     <div className="header-container">
       <p>
         {page.path !== '/'
@@ -21,13 +62,13 @@ const Header = ({ page, onLock }) => (
             </Link>)
           : null}
         {page.title || path2title(page.path)}
-        <img src={profilePic}
-          onClick={onLock}
-          className="user-icon"
-          alt="Profile picture" />
+        <NightModeButton onClick={changeTheme}>
+          <img src={themeIcons[selectedTheme]}
+            alt="Change theme" />
+        </NightModeButton>
       </p>
     </div>
-  </header>
+  </StyledHeader>
 );
 
 Header.propTypes = PropTypes.shape({
@@ -36,7 +77,6 @@ Header.propTypes = PropTypes.shape({
     path: PropTypes.string.isRequired,
     label: PropTypes.string,
   }).isRequired,
-  lockScreen: PropTypes.func.isRequired,
 }).isRequired;
 
 export default Header;

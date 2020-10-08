@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useSpring, animated } from 'react-spring';
 import tinycolor from 'tinycolor2';
 
-import './ColorWheel.scss';
 
 const ColorWheel = ({ state: selectedColor, handler }) => {
   const colors = [

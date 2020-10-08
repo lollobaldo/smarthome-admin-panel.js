@@ -55,7 +55,7 @@ export default {
       description: 'My awesome Progressive Web App for my Smart home system!',
       background_color: '#ffffff',
       theme_color: '#456df5',
-      display: 'fullscreen',
+      display: 'standalone',
       crossorigin: 'use-credentials',
       icons: [
         {

@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-import Cards from 'components/Card';
+import Cards from 'components/bits/Card';
+import Switch from 'components/bits/Switch';
 
 import iconLight from 'res/icons/light.svg';
 import iconLeds from 'res/icons/color-wheel.svg';
@@ -10,6 +11,7 @@ import iconLeds from 'res/icons/color-wheel.svg';
 import iconFan from 'res/icons/fan.svg';
 import iconPlant from 'res/icons/plant-potted.svg';
 import iconThermometer from 'res/icons/thermometer.svg';
+import iconHumidity from 'res/icons/humidity.svg';
 
 import iconOk from 'res/icons/ok-2.svg';
 
@@ -18,12 +20,7 @@ import './Devices.scss';
 const { Card } = Cards;
 
 const getLightSwitch = (state, handler) => (
-  <label className="switch" onClick={(e) => e.stopPropagation()}>
-    <input type="checkbox"
-      checked={state}
-      onChange={() => { console.log('called'); handler(); }} />
-    <span className="slider round"></span>
-  </label>
+  <Switch state={state} handler={handler} />
 );
 
 const getLedsDot = (color) => (
@@ -44,6 +41,10 @@ const getPlantsIcon = () => (
   }}></img>
 );
 
+const getFanSwitch = (state, handler) => (
+  <Switch state={state} handler={handler} />
+);
+
 const Devices = ({ history, state, onLightSwitch }) => (
   <div className="Devices flex settings">
     <Card name="Light"
@@ -58,9 +59,12 @@ const Devices = ({ history, state, onLightSwitch }) => (
       icon={iconPlant}
       value={getPlantsIcon()}
       onClick={() => history.push('/plants')} />
-    <Card name="Fans" icon={iconFan} value="OFF"/>
-    <Card name="Temp" icon={iconThermometer} value="86%"/>
-    <Card name="Humidity" icon={iconThermometer} value="86%"/>
+    <Card name="Fans" icon={iconFan}
+      value={getFanSwitch(false, () => {})}/>
+    <Card name="Temp" icon={iconThermometer}
+      value={`${Math.round(state.sensors.temperature)}°C`}/>
+    <Card name="RH" icon={iconHumidity}
+      value={`${Math.round(state.sensors.humidity)}%`}/>
   </div>
 );
 

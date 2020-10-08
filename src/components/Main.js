@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Route, withRouter } from 'react-router-dom';
 import tinycolor from 'tinycolor2';
 
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import theme from 'styled-theming';
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
@@ -35,14 +38,13 @@ import Screenlock from './Screenlock';
 import Home from './Home';
 import Lights from './Lights';
 import Leds from './Leds';
-import ColorWheel from './ColorWheel';
-// import Remote from './Remote';
 import Plants from './Plants';
 
 
 import {
   pages, defState, presets, screenLockStatus,
 } from '../utils/constants';
+import { body, card } from '../utils/themes';
 import {
   path2page,
   getKeys,
@@ -70,6 +72,27 @@ library.add(
   faArrowLeft,
 );
 
+const GlobalStyle = createGlobalStyle`
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    ${theme('mode', body)}
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .card {
+    ${theme('mode', card)}
+  }
+`;
 
 class Main extends React.Component {
   constructor(props) {
@@ -112,6 +135,14 @@ class Main extends React.Component {
   auth = () => {
     this.setState({ auth: true });
     document.cookie = 'auth=true; expires=Fri, 31 Dec 9999 23:59:59 GMT';
+  };
+
+  onThemeChange = () => {
+    this.setState({
+      selectedTheme:
+        this.state.selectedTheme === 'light'
+          ? 'dark' : 'light',
+    });
   };
 
   onPresectSelect = (i) => {
@@ -186,60 +217,65 @@ class Main extends React.Component {
     const {
       activePreset,
       name,
+      selectedTheme,
     } = this.state;
     const { lights, plants } = this.state.mqttState;
     return (
       // Need to wrap components
-      <div id="content">
-        <Header
-          onLock={() => this.lockScreen(false)}
-          name={name}
-          page={path2page(location.pathname)} />
-        <Sidebar
-          pages={pages}
-          lockWithPin={() => this.lockScreen(true)}
-          lockWithoutPin={() => this.lockScreen(false)} />
-        { !this.state.auth
-          ? <Login
-              onUnlock={this.auth}
-              pin={this.state.pin} />
-          : null}
-        { this.state.screenLocked !== screenLockStatus.UNLOCKED
-          ? <Screenlock
-              onLock={this.lockScreen}
-              onUnlock={this.unlockScreen}
-              pin={this.state.pin}
-              status={this.state.screenLocked} />
-          : null}
-        <Route exact path="/">
-          <Home
-            onPresectSelect={(i) => this.onPresectSelect(i)}
-            presets={presets}
-            activePreset={activePreset}
-            state={this.state.mqttState}
-            onLightSwitch={this.onLightSwitch} />
-        </Route>
-        <Route path="/lights">
-          <Lights
-            handler={this.onLightSwitch}
-            state={lights.floorlamp} />
-        </Route>
-        <Route path="/leds">
-          <Leds
-            handler={this.onLedsChange}
-            state={lights.leds}
-            effects={ledsEffects} />
-        </Route>
-        <Route path="/plants">
-          <Plants
-            state={plants}
-            plantsDetails={plantDetails} />
-        </Route>
-        <Route path="/trial">
-          <ColorWheel />
-        </Route>
-        <Statusbar />
-      </div>
+      <ThemeProvider theme={{ mode: selectedTheme }}>
+        <GlobalStyle />
+        <div id="content">
+          <Header
+            selectedTheme={selectedTheme}
+            changeTheme={this.onThemeChange}
+            name={name}
+            page={path2page(location.pathname)} />
+          <Sidebar
+            pages={pages}
+            lockWithPin={() => this.lockScreen(true)}
+            lockWithoutPin={() => this.lockScreen(false)} />
+          { !this.state.auth
+            ? <Login
+                onUnlock={this.auth}
+                pin={this.state.pin} />
+            : null}
+          { this.state.screenLocked !== screenLockStatus.UNLOCKED
+            ? <Screenlock
+                onLock={this.lockScreen}
+                onUnlock={this.unlockScreen}
+                pin={this.state.pin}
+                status={this.state.screenLocked} />
+            : null}
+          <Route exact path="/">
+            <Home
+              onPresectSelect={(i) => this.onPresectSelect(i)}
+              presets={presets}
+              activePreset={activePreset}
+              state={this.state.mqttState}
+              onLightSwitch={this.onLightSwitch} />
+          </Route>
+          <Route path="/lights">
+            <Lights
+              handler={this.onLightSwitch}
+              state={lights.floorlamp} />
+          </Route>
+          <Route path="/leds">
+            <Leds
+              handler={this.onLedsChange}
+              state={lights.leds}
+              effects={ledsEffects} />
+          </Route>
+          <Route path="/plants">
+            <Plants
+              state={plants}
+              plantsDetails={plantDetails} />
+          </Route>
+          <Route path="/trial">
+            {/* <ColorWheel /> */}
+          </Route>
+          <Statusbar />
+        </div>
+      </ThemeProvider>
     );
   }
 }

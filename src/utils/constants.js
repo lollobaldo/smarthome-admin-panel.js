@@ -39,6 +39,11 @@ export const pages = [
   },
 ];
 
+export const theme = {
+  LIGHT: 1,
+  DARK: 2,
+  BLACK: 3,
+};
 
 export const screenLockStatus = {
   UNLOCKED: 1,
@@ -71,18 +76,25 @@ export const presets = [
     icon: 'moon',
   },
 ];
+
 export const defState = {
   presets,
   auth: true,
   activePreset: -1,
   name: 'Lorenzo',
   pin: 2509,
+  selectedTheme: 'light',
   screenLocked: screenLockStatus.UNLOCKED,
   mqtt: false,
   mqttState: {
     lights: {
       floorlamp: false,
       leds: '#ffbb00',
+    },
+    sensors: {
+      temperature: 0,
+      humidity: 0,
+      heatIndex: 0,
     },
     plants: {
       p1: 0,

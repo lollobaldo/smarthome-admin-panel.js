@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Cards from '../../Card';
+import Cards from 'components/bits/Card';
 
 import './Presets.scss';
 
