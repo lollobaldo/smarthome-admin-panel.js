@@ -44,7 +44,7 @@ import Plants from './Plants';
 import {
   pages, defState, presets, screenLockStatus,
 } from '../utils/constants';
-import { body, card } from '../utils/themes';
+import { body, card, foreground } from '../utils/themes';
 import {
   path2page,
   getKeys,
@@ -89,9 +89,8 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 
-  .card {
-    ${theme('mode', card)}
-  }
+  .card {${theme('mode', card)}}
+  .foreground {${theme('mode', foreground)}}
 `;
 
 class Main extends React.Component {

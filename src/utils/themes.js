@@ -43,3 +43,24 @@ export const card = {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   `,
 };
+
+export const foreground = {
+  light: css`
+    background: #cccccc;
+    color: #ffffff;
+    transition: all 0.14s ease-in;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  `,
+  dark: css`
+    background: #5f5f5f;
+    color: #ffffff;
+    transition: all 0.14s ease-in;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  `,
+  black: css`
+    background: #333333;
+    color: #dddddd;
+    transition: all 0.14s ease-in;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  `,
+};

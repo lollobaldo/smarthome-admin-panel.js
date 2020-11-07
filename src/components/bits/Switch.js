@@ -29,20 +29,18 @@ const StyledLabel = styled.label`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
     transition: .4s;
+    box-shadow: none;
   }
 
   .slider:before {
     position: absolute;
     content: "";
-    height: 1.3em;
-    width: 1.3em;
-    left: 0.05em;
-    bottom: 0.05em;
+    height: 1.2em;
+    width: 1.2em;
+    left: 0.1em;
+    bottom: 0.1em;
     background-color: white;
-    -webkit-transition: .4s;
     transition: .4s;
   }
 
@@ -55,7 +53,7 @@ const StyledLabel = styled.label`
   }
 
   input:checked + .slider:before {
-    transform: translateX(0.6em);
+    transform: translateX(0.55em);
   }
 
   /* Rounded sliders */
@@ -69,11 +67,11 @@ const StyledLabel = styled.label`
 `;
 
 const Switch = ({ state, handler }) => (
-  <StyledLabel className="Switch" onClick={(e) => e.stopPropagation()}>
+  <StyledLabel onClick={(e) => e.stopPropagation()}>
     <input type="checkbox"
       checked={state}
       onChange={handler} />
-    <span className="slider round"></span>
+    <span className="foreground slider round"></span>
   </StyledLabel>
 );
 
