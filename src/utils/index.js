@@ -132,6 +132,11 @@ export const parseMqttMessage = (message) => {
   }
 };
 
+export const clamp = (num, min, max) => (
+  Math.min(Math.max(num, min), max)
+);
+
+
 // export const importAll = (require) => (
 //   require.keys().reduce((acc, next) => {
 //     // eslint-disable-next-line import/no-dynamic-require

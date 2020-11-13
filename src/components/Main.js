@@ -29,22 +29,24 @@ import ledsEffects from 'src/ledsEffects';
 
 import './Main.scss';
 import './w3css.css';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import Statusbar from './Statusbar';
-import Login from './Login';
-import Screenlock from './Screenlock';
-// import Footer from './Footer';
-import Home from './Home';
-import Lights from './Lights';
-import Leds from './Leds';
-import Plants from './Plants';
+import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
+import Statusbar from 'components/Statusbar';
+import Login from 'components/Login';
+import Screenlock from 'components/Screenlock';
+// import Footer from 'components/Footer';
+import Home from 'components/Home';
+import Lights from 'components/Lights';
+import Leds from 'components/Leds';
+import Plants from 'components/Plants';
+
+import Trial from 'components/bits/Trial';
 
 
 import {
   pages, defState, presets, screenLockStatus,
-} from '../utils/constants';
-import { body, card, foreground } from '../utils/themes';
+} from 'utils/constants';
+import { body, card, foreground } from 'utils/themes';
 import {
   path2page,
   getKeys,
@@ -125,7 +127,7 @@ class Main extends React.Component {
         parseMqttMessage(message),
       ),
     });
-    if (topic === 'lights/leds') {
+    if (topic === 'lights') {
       const metaThemeColor = document.querySelector('meta[name=theme-color]');
       metaThemeColor.setAttribute('content', message);
     }
@@ -183,7 +185,7 @@ class Main extends React.Component {
         newState,
       ),
     );
-    safePublish('lights/floorlamp', newState);
+    safePublish('lights/bulbs', newState ? 'W' : '/');
   }
 
   onLedsChange = (colour) => {
@@ -204,7 +206,7 @@ class Main extends React.Component {
         state,
       ),
     );
-    safePublish('lights/leds', command);
+    safePublish('lights', command);
   }
 
   onRemote = (code) => {
@@ -270,7 +272,7 @@ class Main extends React.Component {
               plantsDetails={plantDetails} />
           </Route>
           <Route path="/trial">
-            {/* <ColorWheel /> */}
+            <Trial />
           </Route>
           <Statusbar />
         </div>
