@@ -70,7 +70,7 @@
     "babel-loader": "8.1.0",
     "babel-plugin-styled-components": "1.11.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "browser-sync": "2.26.12",
+    "browser-sync": "2.27.10",
     "chalk": "^2.4.2",
     "concurrently": "4.1.2",
     "connect-history-api-fallback": "^1.6.0",
